@@ -51,7 +51,7 @@ class Transport(Command):
             return result
 
     def clear(self, package):
-        clear_result_pattern = "(Success|Failed)"
+        clear_result_pattern = r"(Success|Failed)"
 
         result = self.shell("pm clear {}".format(package))
         m = re.search(clear_result_pattern, result)
@@ -68,7 +68,7 @@ class Transport(Command):
     def list_features(self):
         result = self.shell("pm list features 2>/dev/null")
 
-        result_pattern = "^feature:(.*?)(?:=(.*?))?\r?$"
+        result_pattern = r"^feature:(.*?)(?:=(.*?))?\r?$"
         features = {}
         for line in result.split('\n'):
             m = re.match(result_pattern, line)
@@ -80,7 +80,7 @@ class Transport(Command):
 
     def list_packages(self):
         result = self.shell("pm list packages 2>/dev/null")
-        result_pattern = "^package:(.*?)\r?$"
+        result_pattern = r"^package:(.*?)\r?$"
 
         packages = []
         for line in result.split('\n'):
@@ -92,7 +92,7 @@ class Transport(Command):
 
     def get_properties(self):
         result = self.shell("getprop")
-        result_pattern = "^\[([\s\S]*?)\]: \[([\s\S]*?)\]\r?$"
+        result_pattern = r"^\[([\s\S]*?)\]: \[([\s\S]*?)\]\r?$"
 
         properties = {}
         for line in result.split('\n'):
