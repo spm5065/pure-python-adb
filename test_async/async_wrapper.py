@@ -2,7 +2,6 @@ import asyncio
 import warnings
 
 
-
 def _await(coro):
     with warnings.catch_warnings(record=True) as warns:
         loop = asyncio.new_event_loop()

@@ -10,11 +10,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 adb_host = "emulator"
-#adb_host = "127.0.0.1"
-#adb_host = "172.20.0.2"
+# adb_host = "127.0.0.1"
+# adb_host = "172.20.0.2"
 adb_port = 5037
 device_serial = "emulator-5554"
 emulator_port = 5554
+
 
 class EmulatorConsole:
     def __init__(self, host, port):
@@ -23,8 +24,8 @@ class EmulatorConsole:
         print(self._telnet.read_until(b"OK", timeout=5))
 
     def send(self, data):
-        self._telnet.write(data.encode('utf-8') + b'\n')
-        return self._telnet.read_until(b"OK", timeout=5).decode('utf-8').strip()
+        self._telnet.write(data.encode("utf-8") + b"\n")
+        return self._telnet.read_until(b"OK", timeout=5).decode("utf-8").strip()
 
     def is_live(self):
         result = self.send("ping")
@@ -36,6 +37,7 @@ class EmulatorConsole:
     def kill(self):
         self.send("kill")
         return True
+
 
 def wait_until_true(check_fn, timeout=10, description=None, interval=1):
     start_time = time.time()
@@ -56,13 +58,17 @@ def wait_until_true(check_fn, timeout=10, description=None, interval=1):
             elapsed_seconds = int(elapsed_seconds)
             if duration != elapsed_seconds:
                 duration = elapsed_seconds
-                logger.info("{}... {}s (timeout:{})".format(msg, elapsed_seconds, timeout))
+                logger.info(
+                    "{}... {}s (timeout:{})".format(msg, elapsed_seconds, timeout)
+                )
 
             time.sleep(interval)
+
 
 @pytest.fixture(scope="session")
 def serial(request):
     return device_serial
+
 
 @pytest.fixture(scope="session")
 def client(request):
@@ -76,9 +82,11 @@ def client(request):
         except Exception:
             return False
 
-    wait_until_true(try_to_connect_to_adb_server,
-                    timeout=60,
-                    description="Try to connect to adb server {}:{}".format(adb_host, adb_port))
+    wait_until_true(
+        try_to_connect_to_adb_server,
+        timeout=60,
+        description="Try to connect to adb server {}:{}".format(adb_host, adb_port),
+    )
 
     logger.info("Adb server version: {}".format(client.version()))
 

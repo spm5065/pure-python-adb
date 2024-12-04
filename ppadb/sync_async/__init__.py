@@ -27,7 +27,7 @@ def _get_src_info(src):
 
 
 class SyncAsync:
-    TEMP_PATH = '/data/local/tmp'
+    TEMP_PATH = "/data/local/tmp"
     DATA_MAX_LENGTH = 65536
 
     def __init__(self, connection):
@@ -41,7 +41,9 @@ class SyncAsync:
         """Push from local path |src| to |dest| on device.
         :param progress: callback, called with (filename, total_size, sent_size)
         """
-        exists, timestamp, total_size = await get_running_loop().run_in_executor(None, _get_src_info, src)
+        exists, timestamp, total_size = await get_running_loop().run_in_executor(
+            None, _get_src_info, src
+        )
 
         if not exists:
             raise FileNotFoundError("Can't find the source file {}".format(src))
@@ -54,7 +56,7 @@ class SyncAsync:
         await self._send_str(Protocol.SEND, args)
 
         # DATA
-        async with aiofiles.open(src, 'rb') as stream:
+        async with aiofiles.open(src, "rb") as stream:
             while True:
                 chunk = await stream.read(self.DATA_MAX_LENGTH)
                 if not chunk:
@@ -76,9 +78,9 @@ class SyncAsync:
         await self._send_str(Protocol.RECV, src)
 
         # DATA
-        async with aiofiles.open(dest, 'wb') as stream:
+        async with aiofiles.open(dest, "wb") as stream:
             while True:
-                flag = (await self.connection.read(4)).decode('utf-8')
+                flag = (await self.connection.read(4)).decode("utf-8")
 
                 if flag == Protocol.DATA:
                     data = await self._read_data()
@@ -90,7 +92,7 @@ class SyncAsync:
                     return
 
                 if flag == Protocol.FAIL:
-                    return (await self._read_data()).decode('utf-8')
+                    return (await self._read_data()).decode("utf-8")
 
     @staticmethod
     def _integer(little_endian):
@@ -98,7 +100,7 @@ class SyncAsync:
 
     @staticmethod
     def _little_endian(n):
-        return struct.pack('<I', n)
+        return struct.pack("<I", n)
 
     async def _read_data(self):
         length = self._integer(await self.connection.read(4))[0]
@@ -122,7 +124,7 @@ class SyncAsync:
             {4}{4}{str length}
         """
         logger.debug("{} {}".format(cmd, args))
-        args = args.encode('utf-8')
+        args = args.encode("utf-8")
 
         le_args_len = self._little_endian(len(args))
         data = cmd.encode() + le_args_len + args

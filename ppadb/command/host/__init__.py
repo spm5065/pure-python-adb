@@ -24,7 +24,7 @@ class Host(Command):
 
         devices = []
 
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             if not line:
                 break
 
@@ -50,9 +50,9 @@ class Host(Command):
 
     def kill(self):
         """
-            Ask the ADB server to quit immediately. This is used when the
-            ADB client detects that an obsolete server is running after an
-            upgrade.
+        Ask the ADB server to quit immediately. This is used when the
+        ADB client detects that an obsolete server is running after an
+        upgrade.
         """
         with self.create_connection() as conn:
             conn.send("host:kill")
@@ -68,7 +68,7 @@ class Host(Command):
         result = self._execute_cmd(cmd)
 
         device_forward_map = {}
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             if line:
                 serial, local, remote = line.split()
                 if serial not in device_forward_map:

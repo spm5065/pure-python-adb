@@ -62,7 +62,7 @@ class FakeStreamWriter:
 
 class FakeStreamReader:
     async def read(self, numbytes):
-        return b'TEST'
+        return b"TEST"
 
 
 def async_patch(*args, **kwargs):

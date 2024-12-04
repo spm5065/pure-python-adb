@@ -6,8 +6,21 @@ from ppadb.utils.logger import AdbLogging
 
 logger = AdbLogging.get_logger(__name__)
 
+
 class TotalCPUStat:
-    def __init__(self, user, nice, system, idle, iowait, irq, softirq, stealstolen, guest, guest_nice):
+    def __init__(
+        self,
+        user,
+        nice,
+        system,
+        idle,
+        iowait,
+        irq,
+        softirq,
+        stealstolen,
+        guest,
+        guest_nice,
+    ):
         self.user = user
         self.nice = nice
         self.system = system
@@ -20,7 +33,18 @@ class TotalCPUStat:
         self.guest_nice = guest_nice
 
     def total(self):
-        return self.user + self.nice + self.system + self.idle + self.iowait + self.irq + self.softirq + self.stealstolen + self.guest + self.guest_nice
+        return (
+            self.user
+            + self.nice
+            + self.system
+            + self.idle
+            + self.iowait
+            + self.irq
+            + self.softirq
+            + self.stealstolen
+            + self.guest
+            + self.guest_nice
+        )
 
     def __add__(self, other):
         summary = TotalCPUStat(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -56,7 +80,7 @@ class TotalCPUStat:
 
     def __str__(self):
         attrs = vars(self)
-        return ', '.join("%s: %s" % item for item in attrs.items())
+        return ", ".join("%s: %s" % item for item in attrs.items())
 
 
 class ProcessCPUStat:
@@ -79,7 +103,7 @@ class ProcessCPUStat:
 
     def __str__(self):
         attrs = vars(self)
-        return ', '.join("%s: %s" % item for item in attrs.items())
+        return ", ".join("%s: %s" % item for item in attrs.items())
 
     def total(self):
         return self.utime + self.stime
@@ -87,7 +111,8 @@ class ProcessCPUStat:
 
 class CPUStat(Plugin):
     total_cpu_pattern = re.compile(
-        "cpu\s+([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s")
+        "cpu\s+([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s([\d]+)\s"
+    )
 
     def cpu_times(self):
         return self.get_total_cpu()
@@ -101,12 +126,12 @@ class CPUStat(Plugin):
         return round(((diff.user + diff.system) / diff.total()) * 100, 2)
 
     def cpu_count(self):
-        result = self.shell('ls /sys/devices/system/cpu')
-        match = re.findall(r'cpu[0-9+]', result)
+        result = self.shell("ls /sys/devices/system/cpu")
+        match = re.findall(r"cpu[0-9+]", result)
         return len(match)
 
     def get_total_cpu(self):
-        result = self.shell('cat /proc/stat')
+        result = self.shell("cat /proc/stat")
         match = self.total_cpu_pattern.search(result)
         if not match and len(match.groups()) != 10:
             logger.error("Can't get the total cpu usage from /proc/stat")
@@ -115,7 +140,7 @@ class CPUStat(Plugin):
         return TotalCPUStat(*map(lambda x: int(x), match.groups()))
 
     def get_pid_cpu(self, pid):
-        result = self.shell('cat /proc/{}/stat'.format(pid)).strip()
+        result = self.shell("cat /proc/{}/stat".format(pid)).strip()
 
         if "No such file or directory" in result:
             return ProcessCPUStat("", 0, 0)
@@ -133,6 +158,8 @@ class CPUStat(Plugin):
 
             if "No such file or directory" not in result:
                 items = result.split()
-                thread_result[tid] = ProcessCPUStat(items[1], int(items[13]), int(items[14]))
+                thread_result[tid] = ProcessCPUStat(
+                    items[1], int(items[13]), int(items[14])
+                )
 
         return thread_result

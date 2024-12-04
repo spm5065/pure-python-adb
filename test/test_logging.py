@@ -1,6 +1,7 @@
 from ppadb.utils.logger import AdbLogging
 import logging
 
+
 def test_without_logging(capsys):
     logger = AdbLogging.get_logger("ppadb.test")
     logger.addHandler(logging.StreamHandler())
@@ -18,6 +19,7 @@ def test_without_logging(capsys):
     logger.debug("DEBUG message")
     assert not captured.out
     assert not captured.err
+
 
 def test_without_log_message_after_set_root_logger_level(capsys):
     logging.basicConfig()
@@ -40,6 +42,7 @@ def test_without_log_message_after_set_root_logger_level(capsys):
     assert not captured.out
     assert not captured.err
 
+
 def test_enable_log_message(capsys):
     logging.basicConfig()
     logger = AdbLogging.get_logger("ppadb.test")
@@ -59,4 +62,3 @@ def test_enable_log_message(capsys):
     logger.debug("DEBUG message")
     assert not captured.out
     assert captured.err
-

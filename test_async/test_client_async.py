@@ -2,12 +2,11 @@
 
 """
 
-
 import asyncio
 import sys
 import unittest
 
-sys.path.insert(0, '..')
+sys.path.insert(0, "..")
 
 from ppadb.client_async import ClientAsync
 
@@ -24,19 +23,30 @@ class TestClientAsync(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             await self.client.create_connection()
 
-
     @awaiter
     async def test_device_returns_none(self):
-        with async_patch('asyncio.open_connection', return_value=(FakeStreamReader(), FakeStreamWriter())):
-            with async_patch('{}.FakeStreamReader.read'.format(__name__), side_effect=[b'OKAY', b'0000', b'']):
-                self.assertIsNone(await self.client.device('serial'))
+        with async_patch(
+            "asyncio.open_connection",
+            return_value=(FakeStreamReader(), FakeStreamWriter()),
+        ):
+            with async_patch(
+                "{}.FakeStreamReader.read".format(__name__),
+                side_effect=[b"OKAY", b"0000", b""],
+            ):
+                self.assertIsNone(await self.client.device("serial"))
 
     @awaiter
     async def test_device(self):
-        with async_patch('asyncio.open_connection', return_value=(FakeStreamReader(), FakeStreamWriter())):
-            with async_patch('{}.FakeStreamReader.read'.format(__name__), side_effect=[b'OKAY', b'000b', b'serial test']):
-                self.assertIsNotNone(await self.client.device('serial'))
+        with async_patch(
+            "asyncio.open_connection",
+            return_value=(FakeStreamReader(), FakeStreamWriter()),
+        ):
+            with async_patch(
+                "{}.FakeStreamReader.read".format(__name__),
+                side_effect=[b"OKAY", b"000b", b"serial test"],
+            ):
+                self.assertIsNotNone(await self.client.device("serial"))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
