@@ -6,6 +6,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 import os
+import pathlib
 import sys
 import unittest
 from unittest.mock import mock_open, patch
@@ -82,7 +83,7 @@ class TestDevice(unittest.TestCase):
 
     @awaiter
     async def test_push_dir(self):
-        with patch('os.path.exists', return_value=True), patch('os.path.isfile', return_value=False), patch('os.path.isdir', return_value=True), patch('os.walk', return_value=[('root1', 'dirs1', 'files1'), ('root2', 'dirs2', 'files2')]):
+        with patch('pathlib.Path.exists', return_value=True), patch('os.path.isfile', return_value=False), patch('os.path.isdir', return_value=True), patch('os.walk', return_value=[('root1', 'dirs1', 'files1'), ('root2', 'dirs2', 'files2')]):
             with async_patch('ppadb.device_async.DeviceAsync.shell'), async_patch('ppadb.device_async.DeviceAsync._push'):
                 await self.device.push('src', 'dest')
 

@@ -3,11 +3,11 @@ try:
 except ImportError:  # pragma: no cover
     from asyncio import get_event_loop as get_running_loop  # Python 3.6 compatibility
 
-import re
 import os
+from pathlib import Path, PurePosixPath
+import re
 
 from ppadb.command.transport_async import TransportAsync
-from ppadb.device import _get_src_info
 from ppadb.sync_async import SyncAsync
 
 
@@ -36,22 +36,23 @@ class DeviceAsync(TransportAsync):
             await sync.push(src, dest, mode, progress)
 
     async def push(self, src, dest, mode=0o644, progress=None):
-        exists, isfile, isdir, basename, walk = await get_running_loop().run_in_executor(None, _get_src_info, src)
-        if not exists:
+        src = Path(src)
+        dest = PurePosixPath(dest)
+        if not src.exists():
             raise FileNotFoundError("Cannot find {}".format(src))
 
-        if isfile:
+        if src.is_file():
             await self._push(src, dest, mode, progress)
+        elif src.is_dir():
+            src.resolve()
+            for root, dirs, files in src.walk():
+                subdir = root.relative_to(src)
+                destdir = dest / src.name / subdir
 
-        elif isdir:
-            for root, dirs, files in walk:
-                subdir = os.path.relpath(root, src)
-                root_dir_path = os.path.normpath(os.path.join(basename, subdir))
-
-                await self.shell('mkdir -p "{}"'.format(os.path.normpath(os.path.join(dest, root_dir_path))))
+                await self.shell(f'mkdir -p "{destdir}"')
 
                 for item in files:
-                    await self._push(os.path.normpath(os.path.join(root, item)), os.path.normpath(os.path.join(dest, root_dir_path, item)), mode, progress)
+                    await self._push(root / item, destdir / item, mode, progress)
 
     async def pull(self, src, dest):
         sync_conn = await self.sync()

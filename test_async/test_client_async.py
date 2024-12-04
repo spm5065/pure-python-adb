@@ -24,6 +24,7 @@ class TestClientAsync(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             await self.client.create_connection()
 
+
     @awaiter
     async def test_device_returns_none(self):
         with async_patch('asyncio.open_connection', return_value=(FakeStreamReader(), FakeStreamWriter())):

@@ -1,5 +1,5 @@
 import time
-import telnetlib
+import Exscript.protocols.telnetlib as telnetlib
 
 import pytest
 

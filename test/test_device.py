@@ -148,6 +148,16 @@ def test_push_dir(device):
     assert "app-x86.apk" in result
 
 
+def test_push_recurse_dir(device):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    apk_path = os.path.join(dir_path, "resources")
+    device.push(apk_path, "/sdcard")
+
+    result = device.shell("ls /sdcard/resources/apk")
+    assert "app-armeabi-v7a.apk" in result
+    assert "app-x86.apk" in result
+
+
 def test_push_with_progress(device):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     apk_path = os.path.join(dir_path, "resources/apk/app-x86.apk")

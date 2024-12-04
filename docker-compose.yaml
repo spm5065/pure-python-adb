@@ -10,7 +10,7 @@ services:
     environment:
      - PYTHONPATH=/code
      - PYTHONUNBUFFERED=0
-    command: sh -c "pip install -r requirements.txt;py.test test -s -v --junit-xml test_result.xml;pip install 'aiofiles>=0.4.0';py.test test_async -s -v --junit-xml test_result_async.xml"
+    command: sh -c "pip install -r requirements.txt;pip install 'Exscript';py.test test -s -v --junit-xml test_result.xml;pip install 'aiofiles>=0.4.0';py.test test_async -s -v --junit-xml test_result_async.xml; sleep 1800"
 
   emulator:
     image: swind/android-emulator:android_28
@@ -19,5 +19,7 @@ services:
      - ANDROID_EMULATOR_EXTRA_ARGS=-skin 1080x1920 -memory 2048 -no-boot-anim -gpu host -qemu
     ports:
       - 6080:6080
+    group_add:
+      - keep-groups
     devices:
       - "/dev/kvm:/dev/kvm"
