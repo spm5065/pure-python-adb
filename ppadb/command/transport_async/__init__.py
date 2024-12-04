@@ -18,7 +18,7 @@ class TransportAsync:
 
         result = await conn.read_all()
         await conn.close()
-        return result.decode('utf-8')
+        return result.decode("utf-8")
 
     async def sync(self):
         conn = await self.create_connection()
@@ -34,7 +34,7 @@ class TransportAsync:
             await conn.send(cmd)
             result = await conn.read_all()
 
-        if result and len(result) > 5 and result[5] == 0x0d:
-            return result.replace(b'\r\n', b'\n')
+        if result and len(result) > 5 and result[5] == 0x0D:
+            return result.replace(b"\r\n", b"\n")
         else:
             return result

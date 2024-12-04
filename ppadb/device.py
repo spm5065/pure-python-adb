@@ -1,5 +1,6 @@
 import re
 import os
+from pathlib import Path, PurePosixPath
 
 from ppadb.command.transport import Transport
 from ppadb.command.serial import Serial
@@ -55,24 +56,23 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
             sync.push(src, dest, mode, progress)
 
     def push(self, src, dest, mode=0o644, progress=None):
-        if not os.path.exists(src):
+        src = Path(src)
+        dest = PurePosixPath(dest)
+        if not src.exists():
             raise FileNotFoundError("Cannot find {}".format(src))
-        elif os.path.isfile(src):
+
+        if src.is_file():
             self._push(src, dest, mode, progress)
-        elif os.path.isdir(src):
+        elif src.is_dir():
+            src.resolve()
+            for root, dirs, files in src.walk():
+                subdir = root.relative_to(src)
+                destdir = dest / src.name / subdir
 
-            basename = os.path.basename(src)
-
-            for root, dirs, files in os.walk(src):
-                subdir = root.replace(src, "")
-                if subdir.startswith("/"):
-                    subdir = subdir[1:]
-                root_dir_path = os.path.join(basename, subdir)
-
-                self.shell("mkdir -p {}/{}".format(dest, root_dir_path))
+                self.shell(f'mkdir -p "{destdir}"')
 
                 for item in files:
-                    self._push(os.path.join(root, item), os.path.join(dest, root_dir_path, item), mode, progress)
+                    self._push(root / item, destdir / item, mode, progress)
 
     def pull(self, src, dest):
         sync_conn = self.sync()
@@ -81,31 +81,43 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
         with sync_conn:
             return sync.pull(src, dest)
 
-    def install(self, path,
-                forward_lock=False,  # -l
-                reinstall=False,  # -r
-                test=False,  # -t
-                installer_package_name="",  # -i {installer_package_name}
-                shared_mass_storage=False,  # -s
-                internal_system_memory=False,  # -f
-                downgrade=False,  # -d
-                grand_all_permissions=False  # -g
-                ):
+    def install(
+        self,
+        path,
+        forward_lock=False,  # -l
+        reinstall=False,  # -r
+        test=False,  # -t
+        installer_package_name="",  # -i {installer_package_name}
+        shared_mass_storage=False,  # -s
+        internal_system_memory=False,  # -f
+        downgrade=False,  # -d
+        grand_all_permissions=False,  # -g
+    ):
         dest = Sync.temp(path)
         self.push(path, dest)
 
         parameters = []
-        if forward_lock: parameters.append("-l")
-        if reinstall: parameters.append("-r")
-        if test: parameters.append("-t")
-        if len(installer_package_name) > 0: parameters.append("-i {}".format(installer_package_name))
-        if shared_mass_storage: parameters.append("-s")
-        if internal_system_memory: parameters.append("-f")
-        if downgrade: parameters.append("-d")
-        if grand_all_permissions: parameters.append("-g")
+        if forward_lock:
+            parameters.append("-l")
+        if reinstall:
+            parameters.append("-r")
+        if test:
+            parameters.append("-t")
+        if len(installer_package_name) > 0:
+            parameters.append("-i {}".format(installer_package_name))
+        if shared_mass_storage:
+            parameters.append("-s")
+        if internal_system_memory:
+            parameters.append("-f")
+        if downgrade:
+            parameters.append("-d")
+        if grand_all_permissions:
+            parameters.append("-g")
 
         try:
-            result = self.shell("pm install {} {}".format(" ".join(parameters), cmd_quote(dest)))
+            result = self.shell(
+                "pm install {} {}".format(" ".join(parameters), cmd_quote(dest))
+            )
             match = re.search(self.INSTALL_RESULT_PATTERN, result)
 
             if match and match.group(1) == "Success":
@@ -119,7 +131,7 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
             self.shell("rm -f {}".format(dest))
 
     def is_installed(self, package):
-        result = self.shell('pm path {}'.format(package))
+        result = self.shell("pm path {}".format(package))
 
         if "package:" in result:
             return True
@@ -127,7 +139,7 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
             return False
 
     def uninstall(self, package):
-        result = self.shell('pm uninstall {}'.format(package))
+        result = self.shell("pm uninstall {}".format(package))
 
         m = re.search(self.UNINSTALL_RESULT_PATTERN, result)
 

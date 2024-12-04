@@ -8,7 +8,7 @@ logger = AdbLogging.get_logger(__name__)
 
 
 class Connection:
-    def __init__(self, host='localhost', port=5037, timeout=None):
+    def __init__(self, host="localhost", port=5037, timeout=None):
         self.host = host
         self.port = port
         self.timeout = timeout
@@ -28,7 +28,9 @@ class Connection:
         l_onoff = 1
         l_linger = 0
 
-        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack('ii', l_onoff, l_linger))
+        self.socket.setsockopt(
+            socket.SOL_SOCKET, socket.SO_LINGER, struct.pack("ii", l_onoff, l_linger)
+        )
         if self.timeout:
             self.socket.settimeout(self.timeout)
 
@@ -36,11 +38,11 @@ class Connection:
             self.socket.connect((self.host, self.port))
         except socket.error as e:
             self.close()
-            raise RuntimeError("ERROR: connecting to {}:{} {}.\nIs adb running on your computer?".format(
-                self.host,
-                self.port,
-                e
-            ))
+            raise RuntimeError(
+                "ERROR: connecting to {}:{} {}.\nIs adb running on your computer?".format(
+                    self.host, self.port, e
+                )
+            )
 
         return self.socket
 
@@ -72,10 +74,10 @@ class Connection:
         self.socket.send(data)
 
     def receive(self):
-        nob = int(self._recv(4).decode('utf-8'), 16)
+        nob = int(self._recv(4).decode("utf-8"), 16)
         recv = self._recv_into(nob)
 
-        return recv.decode('utf-8')
+        return recv.decode("utf-8")
 
     def send(self, msg):
         msg = Protocol.encode_data(msg)
@@ -84,9 +86,9 @@ class Connection:
         return self._check_status()
 
     def _check_status(self):
-        recv = self._recv(4).decode('utf-8')
+        recv = self._recv(4).decode("utf-8")
         if recv != Protocol.OKAY:
-            error = self._recv(1024).decode('utf-8')
+            error = self._recv(1024).decode("utf-8")
             raise RuntimeError("ERROR: {} {}".format(repr(recv), error))
 
         return True

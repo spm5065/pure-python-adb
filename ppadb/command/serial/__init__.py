@@ -16,14 +16,12 @@ class Serial(Command):
     def forward(self, local, remote, norebind=False):
         if norebind:
             cmd = "host-serial:{serial}:forward:norebind:{local};{remote}".format(
-                serial=self.serial,
-                local=local,
-                remote=remote)
+                serial=self.serial, local=local, remote=remote
+            )
         else:
             cmd = "host-serial:{serial}:forward:{local};{remote}".format(
-                serial=self.serial,
-                local=local,
-                remote=remote)
+                serial=self.serial, local=local, remote=remote
+            )
 
         self._execute_cmd(cmd, with_response=False)
 
@@ -37,7 +35,7 @@ class Serial(Command):
 
         forward_map = {}
 
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             if line:
                 serial, local, remote = line.split()
                 if serial == self.serial:
@@ -46,7 +44,9 @@ class Serial(Command):
         return forward_map
 
     def killforward(self, local):
-        cmd = "host-serial:{serial}:killforward:{local}".format(serial=self.serial, local=local)
+        cmd = "host-serial:{serial}:killforward:{local}".format(
+            serial=self.serial, local=local
+        )
         self._execute_cmd(cmd, with_response=False)
 
     def killforward_all(self):

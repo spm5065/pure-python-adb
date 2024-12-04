@@ -9,13 +9,12 @@ class BatteryStats(Plugin):
     def get_battery_level(self):
         battery = self.shell("dumpsys battery")
 
-        for line in battery.split('\n'):
+        for line in battery.split("\n"):
             tokens = line.split(":")
             if tokens[0].strip() == "level" and len(tokens) == 2:
                 return int(tokens[1])
 
         return None
-
 
     def get_batterystats(self):
         result = self.shell("dumpsys batterystats -c")

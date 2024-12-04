@@ -1,6 +1,11 @@
-
 class Version:
-    def __init__(self, checkin_version,parcel_version,start_platform_version,end_platform_version):
+    def __init__(
+        self,
+        checkin_version,
+        parcel_version,
+        start_platform_version,
+        end_platform_version,
+    ):
         self.id = "vers"
         self.checkin_version = checkin_version
         self.parcel_version = parcel_version
@@ -9,14 +14,14 @@ class Version:
 
 
 class UID:
-    def __init__(self, uid,package_name):
+    def __init__(self, uid, package_name):
         self.id = "uid"
         self.uid = uid
         self.package_name = package_name
 
 
 class APK:
-    def __init__(self, wakeups,apk,service,start_time,starts,launches):
+    def __init__(self, wakeups, apk, service, start_time, starts, launches):
         self.id = "apk"
         self.wakeups = wakeups
         self.apk = apk
@@ -27,7 +32,7 @@ class APK:
 
 
 class Process:
-    def __init__(self, process,user,system,foreground,starts):
+    def __init__(self, process, user, system, foreground, starts):
         self.id = "pr"
         self.process = process
         self.user = user
@@ -37,7 +42,7 @@ class Process:
 
 
 class Sensor:
-    def __init__(self, sensor_number,time,count):
+    def __init__(self, sensor_number, time, count):
         self.id = "sr"
         self.sensor_number = sensor_number
         self.time = time
@@ -45,21 +50,21 @@ class Sensor:
 
 
 class Vibrator:
-    def __init__(self, time,count):
+    def __init__(self, time, count):
         self.id = "vib"
         self.time = time
         self.count = count
 
 
 class Foreground:
-    def __init__(self, time,count):
+    def __init__(self, time, count):
         self.id = "fg"
         self.time = time
         self.count = count
 
 
 class StateTime:
-    def __init__(self, foreground,active,running):
+    def __init__(self, foreground, active, running):
         self.id = "st"
         self.foreground = foreground
         self.active = active
@@ -67,7 +72,19 @@ class StateTime:
 
 
 class Wakelock:
-    def __init__(self, wake_lock,full_time,f,full_count,partial_time,p,partial_count,window_time,w,window_count):
+    def __init__(
+        self,
+        wake_lock,
+        full_time,
+        f,
+        full_count,
+        partial_time,
+        p,
+        partial_count,
+        window_time,
+        w,
+        window_count,
+    ):
         self.id = "wl"
         self.wake_lock = wake_lock
         self.full_time = full_time
@@ -82,7 +99,7 @@ class Wakelock:
 
 
 class Sync:
-    def __init__(self, sync,time,count):
+    def __init__(self, sync, time, count):
         self.id = "sy"
         self.sync = sync
         self.time = time
@@ -90,7 +107,7 @@ class Sync:
 
 
 class Job:
-    def __init__(self, job,time,count):
+    def __init__(self, job, time, count):
         self.id = "jb"
         self.job = job
         self.time = time
@@ -98,7 +115,7 @@ class Job:
 
 
 class KernelWakeLock:
-    def __init__(self, kernel_wake_lock,time,count):
+    def __init__(self, kernel_wake_lock, time, count):
         self.id = "kwl"
         self.kernel_wake_lock = kernel_wake_lock
         self.time = time
@@ -106,7 +123,7 @@ class KernelWakeLock:
 
 
 class WakeupReason:
-    def __init__(self, wakeup_reason,time,count):
+    def __init__(self, wakeup_reason, time, count):
         self.id = "wr"
         self.wakeup_reason = wakeup_reason
         self.time = time
@@ -114,7 +131,19 @@ class WakeupReason:
 
 
 class Network:
-    def __init__(self, mobile_bytes_rx,mobile_bytes_tx,wifi_bytes_rx,wifi_bytes_tx,mobile_packets_rx,mobile_packets_tx,wifi_packets_rx,wifi_packets_tx,mobile_active_time,mobile_active_count):
+    def __init__(
+        self,
+        mobile_bytes_rx,
+        mobile_bytes_tx,
+        wifi_bytes_rx,
+        wifi_bytes_tx,
+        mobile_packets_rx,
+        mobile_packets_tx,
+        wifi_packets_rx,
+        wifi_packets_tx,
+        mobile_active_time,
+        mobile_active_count,
+    ):
         self.id = "nt"
         self.mobile_bytes_rx = mobile_bytes_rx
         self.mobile_bytes_tx = mobile_bytes_tx
@@ -129,7 +158,7 @@ class Network:
 
 
 class UserActivity:
-    def __init__(self, other,button,touch):
+    def __init__(self, other, button, touch):
         self.id = "ua"
         self.other = other
         self.button = button
@@ -137,7 +166,17 @@ class UserActivity:
 
 
 class Battery:
-    def __init__(self, start_count,battery_realtime,battery_uptime,total_realtime,total_uptime,start_clock_time,battery_screen_off_realtime,battery_screen_off_uptime):
+    def __init__(
+        self,
+        start_count,
+        battery_realtime,
+        battery_uptime,
+        total_realtime,
+        total_uptime,
+        start_clock_time,
+        battery_screen_off_realtime,
+        battery_screen_off_uptime,
+    ):
         self.id = "bt"
         self.start_count = start_count
         self.battery_realtime = battery_realtime
@@ -150,7 +189,7 @@ class Battery:
 
 
 class BatteryDischarge:
-    def __init__(self, low,high,screen_on,screen_off):
+    def __init__(self, low, high, screen_on, screen_off):
         self.id = "dc"
         self.low = low
         self.high = high
@@ -159,14 +198,23 @@ class BatteryDischarge:
 
 
 class BatteryLevel:
-    def __init__(self, start_level,current_level):
+    def __init__(self, start_level, current_level):
         self.id = "lv"
         self.start_level = start_level
         self.current_level = current_level
 
 
 class WiFi:
-    def __init__(self, full_wifi_lock_on_time,wifi_scan_time,wifi_running_time,wifi_scan_count,wifi_idle_time,wifi_receive_time,wifi_transmit_time):
+    def __init__(
+        self,
+        full_wifi_lock_on_time,
+        wifi_scan_time,
+        wifi_running_time,
+        wifi_scan_count,
+        wifi_idle_time,
+        wifi_receive_time,
+        wifi_transmit_time,
+    ):
         self.id = "wfl"
         self.full_wifi_lock_on_time = full_wifi_lock_on_time
         self.wifi_scan_time = wifi_scan_time
@@ -178,7 +226,15 @@ class WiFi:
 
 
 class GlobalWiFi:
-    def __init__(self, wifi_on_time,wifi_running_time,wifi_idle_time,wifi_receive_time,wifi_transmit_time,wifi_power_mah):
+    def __init__(
+        self,
+        wifi_on_time,
+        wifi_running_time,
+        wifi_idle_time,
+        wifi_receive_time,
+        wifi_transmit_time,
+        wifi_power_mah,
+    ):
         self.id = "gwfl"
         self.wifi_on_time = wifi_on_time
         self.wifi_running_time = wifi_running_time
@@ -189,7 +245,7 @@ class GlobalWiFi:
 
 
 class GlobalBluetooth:
-    def __init__(self, bt_idle_time,bt_receive_time,bt_transmit_time,bt_power_mah):
+    def __init__(self, bt_idle_time, bt_receive_time, bt_transmit_time, bt_power_mah):
         self.id = "gble"
         self.bt_idle_time = bt_idle_time
         self.bt_receive_time = bt_receive_time
@@ -198,7 +254,24 @@ class GlobalBluetooth:
 
 
 class Misc:
-    def __init__(self, screen_on_time,phone_on_time,full_wakelock_time_total,partial_wakelock_time_total,mobile_radio_active_time,mobile_radio_active_adjusted_time,interactive_time,power_save_mode_enabled_time,connectivity_changes,device_idle_mode_enabled_time,device_idle_mode_enabled_count,device_idling_time,device_idling_count,mobile_radio_active_count,mobile_radio_active_unknown_time):
+    def __init__(
+        self,
+        screen_on_time,
+        phone_on_time,
+        full_wakelock_time_total,
+        partial_wakelock_time_total,
+        mobile_radio_active_time,
+        mobile_radio_active_adjusted_time,
+        interactive_time,
+        power_save_mode_enabled_time,
+        connectivity_changes,
+        device_idle_mode_enabled_time,
+        device_idle_mode_enabled_count,
+        device_idling_time,
+        device_idling_count,
+        mobile_radio_active_count,
+        mobile_radio_active_unknown_time,
+    ):
         self.id = "m"
         self.screen_on_time = screen_on_time
         self.phone_on_time = phone_on_time
@@ -218,7 +291,17 @@ class Misc:
 
 
 class GlobalNetwork:
-    def __init__(self, mobile_rx_total_bytes,mobile_tx_total_bytes,wifi_rx_total_bytes,wifi_tx_total_bytes,mobile_rx_total_packets,mobile_tx_total_packets,wifi_rx_total_packets,wifi_tx_total_packets):
+    def __init__(
+        self,
+        mobile_rx_total_bytes,
+        mobile_tx_total_bytes,
+        wifi_rx_total_bytes,
+        wifi_tx_total_bytes,
+        mobile_rx_total_packets,
+        mobile_tx_total_packets,
+        wifi_rx_total_packets,
+        wifi_tx_total_packets,
+    ):
         self.id = "gn"
         self.mobile_rx_total_bytes = mobile_rx_total_bytes
         self.mobile_tx_total_bytes = mobile_tx_total_bytes
@@ -231,7 +314,7 @@ class GlobalNetwork:
 
 
 class ScreenBrightness:
-    def __init__(self, dark,dim,medium,light,bright):
+    def __init__(self, dark, dim, medium, light, bright):
         self.id = "br"
         self.dark = dark
         self.dim = dim
@@ -247,7 +330,7 @@ class SignalScanningTime:
 
 
 class SignalStrengthTime:
-    def __init__(self, none,poor,moderate,good,great):
+    def __init__(self, none, poor, moderate, good, great):
         self.id = "sgt"
         self.none = none
         self.poor = poor
@@ -257,7 +340,7 @@ class SignalStrengthTime:
 
 
 class SignalStrengthCount:
-    def __init__(self, none,poor,moderate,good,great):
+    def __init__(self, none, poor, moderate, good, great):
         self.id = "sgc"
         self.none = none
         self.poor = poor
@@ -267,7 +350,26 @@ class SignalStrengthCount:
 
 
 class DataConnectionTime:
-    def __init__(self, none,gprs,edge,umts,cdma,evdo_0,evdo_a,_1xrtt,hsdpa,hsupa,hspa,iden,evdo_b,lte,ehrpd,hspap,other):
+    def __init__(
+        self,
+        none,
+        gprs,
+        edge,
+        umts,
+        cdma,
+        evdo_0,
+        evdo_a,
+        _1xrtt,
+        hsdpa,
+        hsupa,
+        hspa,
+        iden,
+        evdo_b,
+        lte,
+        ehrpd,
+        hspap,
+        other,
+    ):
         self.id = "dct"
         self.none = none
         self.gprs = gprs
@@ -289,7 +391,26 @@ class DataConnectionTime:
 
 
 class DataConnectionCount:
-    def __init__(self, none,gprs,edge,umts,cdma,evdo_0,evdo_a,_1xrtt,hsdpa,hsupa,hspa,iden,evdo_b,lte,ehrpd,hspap,other):
+    def __init__(
+        self,
+        none,
+        gprs,
+        edge,
+        umts,
+        cdma,
+        evdo_0,
+        evdo_a,
+        _1xrtt,
+        hsdpa,
+        hsupa,
+        hspa,
+        iden,
+        evdo_b,
+        lte,
+        ehrpd,
+        hspap,
+        other,
+    ):
         self.id = "dcc"
         self.none = none
         self.gprs = gprs
@@ -311,7 +432,17 @@ class DataConnectionCount:
 
 
 class WiFiStateTime:
-    def __init__(self, off,off_scanning,on_no_networks,on_disconnected,on_connected_sta,on_connected_p2p,on_connected_sta_p2p,soft_ap):
+    def __init__(
+        self,
+        off,
+        off_scanning,
+        on_no_networks,
+        on_disconnected,
+        on_connected_sta,
+        on_connected_p2p,
+        on_connected_sta_p2p,
+        soft_ap,
+    ):
         self.id = "wst"
         self.off = off
         self.off_scanning = off_scanning
@@ -324,7 +455,17 @@ class WiFiStateTime:
 
 
 class WiFiStateCount:
-    def __init__(self, off,off_scanning,on_no_networks,on_disconnected,on_connected_sta,on_connected_p2p,on_connected_sta_p2p,soft_ap):
+    def __init__(
+        self,
+        off,
+        off_scanning,
+        on_no_networks,
+        on_disconnected,
+        on_connected_sta,
+        on_connected_p2p,
+        on_connected_sta_p2p,
+        soft_ap,
+    ):
         self.id = "wsc"
         self.off = off
         self.off_scanning = off_scanning
@@ -337,7 +478,22 @@ class WiFiStateCount:
 
 
 class WiFiSupplicantStateTime:
-    def __init__(self, invalid,disconnected,interface_disabled,inactive,scanning,authenticating,associating,associated,four_way_handshake,group_handshake,completed,dormant,uninitialized):
+    def __init__(
+        self,
+        invalid,
+        disconnected,
+        interface_disabled,
+        inactive,
+        scanning,
+        authenticating,
+        associating,
+        associated,
+        four_way_handshake,
+        group_handshake,
+        completed,
+        dormant,
+        uninitialized,
+    ):
         self.id = "wsst"
         self.invalid = invalid
         self.disconnected = disconnected
@@ -355,7 +511,22 @@ class WiFiSupplicantStateTime:
 
 
 class WiFiSupplicantStateCount:
-    def __init__(self, invalid,disconnected,interface_disabled,inactive,scanning,authenticating,associating,associated,four_way_handshake,group_handshake,completed,dormant,uninitialized):
+    def __init__(
+        self,
+        invalid,
+        disconnected,
+        interface_disabled,
+        inactive,
+        scanning,
+        authenticating,
+        associating,
+        associated,
+        four_way_handshake,
+        group_handshake,
+        completed,
+        dormant,
+        uninitialized,
+    ):
         self.id = "wssc"
         self.invalid = invalid
         self.disconnected = disconnected
@@ -373,7 +544,7 @@ class WiFiSupplicantStateCount:
 
 
 class WiFiSignalStrengthTime:
-    def __init__(self, none,poor,moderate,good,great):
+    def __init__(self, none, poor, moderate, good, great):
         self.id = "wsgt"
         self.none = none
         self.poor = poor
@@ -383,7 +554,7 @@ class WiFiSignalStrengthTime:
 
 
 class WiFiSignalStrengthCount:
-    def __init__(self, none,poor,moderate,good,great):
+    def __init__(self, none, poor, moderate, good, great):
         self.id = "wsgc"
         self.none = none
         self.poor = poor
@@ -393,7 +564,7 @@ class WiFiSignalStrengthCount:
 
 
 class BluetoothStateTime:
-    def __init__(self, inactive,low,med,high):
+    def __init__(self, inactive, low, med, high):
         self.id = "bst"
         self.inactive = inactive
         self.low = low
@@ -402,52 +573,54 @@ class BluetoothStateTime:
 
 
 class BluetoothStateCount:
-    def __init__(self, inactive,low,med,high):
+    def __init__(self, inactive, low, med, high):
         self.id = "bsc"
         self.inactive = inactive
         self.low = low
         self.med = med
         self.high = high
 
-mapping={
-'vers':Version,
-'uid':UID,
-'apk':APK,
-'pr':Process,
-'sr':Sensor,
-'vib':Vibrator,
-'fg':Foreground,
-'st':StateTime,
-'wl':Wakelock,
-'sy':Sync,
-'jb':Job,
-'kwl':KernelWakeLock,
-'wr':WakeupReason,
-'nt':Network,
-'ua':UserActivity,
-'bt':Battery,
-'dc':BatteryDischarge,
-'lv':BatteryLevel,
-'wfl':WiFi,
-'gwfl':GlobalWiFi,
-'gble':GlobalBluetooth,
-'m':Misc,
-'gn':GlobalNetwork,
-'br':ScreenBrightness,
-'sst':SignalScanningTime,
-'sgt':SignalStrengthTime,
-'sgc':SignalStrengthCount,
-'dct':DataConnectionTime,
-'dcc':DataConnectionCount,
-'wst':WiFiStateTime,
-'wsc':WiFiStateCount,
-'wsst':WiFiSupplicantStateTime,
-'wssc':WiFiSupplicantStateCount,
-'wsgt':WiFiSignalStrengthTime,
-'wsgc':WiFiSignalStrengthCount,
-'bst':BluetoothStateTime,
-'bsc':BluetoothStateCount
+
+mapping = {
+    "vers": Version,
+    "uid": UID,
+    "apk": APK,
+    "pr": Process,
+    "sr": Sensor,
+    "vib": Vibrator,
+    "fg": Foreground,
+    "st": StateTime,
+    "wl": Wakelock,
+    "sy": Sync,
+    "jb": Job,
+    "kwl": KernelWakeLock,
+    "wr": WakeupReason,
+    "nt": Network,
+    "ua": UserActivity,
+    "bt": Battery,
+    "dc": BatteryDischarge,
+    "lv": BatteryLevel,
+    "wfl": WiFi,
+    "gwfl": GlobalWiFi,
+    "gble": GlobalBluetooth,
+    "m": Misc,
+    "gn": GlobalNetwork,
+    "br": ScreenBrightness,
+    "sst": SignalScanningTime,
+    "sgt": SignalStrengthTime,
+    "sgc": SignalStrengthCount,
+    "dct": DataConnectionTime,
+    "dcc": DataConnectionCount,
+    "wst": WiFiStateTime,
+    "wsc": WiFiStateCount,
+    "wsst": WiFiSupplicantStateTime,
+    "wssc": WiFiSupplicantStateCount,
+    "wsgt": WiFiSignalStrengthTime,
+    "wsgc": WiFiSignalStrengthCount,
+    "bst": BluetoothStateTime,
+    "bsc": BluetoothStateCount,
 }
+
 
 def get_section(name):
     return mapping.get(name)

@@ -3,7 +3,7 @@ from ppadb.connection_async import ConnectionAsync
 
 
 class ClientAsync(HostAsync):
-    def __init__(self, host='127.0.0.1', port=5037):
+    def __init__(self, host="127.0.0.1", port=5037):
         self.host = host
         self.port = port
 

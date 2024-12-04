@@ -3,9 +3,8 @@ import time
 
 def open_chrome(device):
     activity = "com.android.chrome/com.google.android.apps.chrome.Main"
-    cmd = 'am start -a android.intent.action.VIEW -n {activity} -d {url}'.format(
-        activity=activity,
-        url="https://www.google.com"
+    cmd = "am start -a android.intent.action.VIEW -n {activity} -d {url}".format(
+        activity=activity, url="https://www.google.com"
     )
     device.shell(cmd)
 
