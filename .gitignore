@@ -8,5 +8,6 @@ dist
 .pytest_cache
 *.pyc
 venv
+.venv
 test_result.xml
 .python-version
