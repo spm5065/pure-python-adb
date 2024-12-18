@@ -33,7 +33,7 @@ class Traffic(Plugin):
         cmd = 'dumpsys package {} | grep userId'.format(package_name)
         result = self.shell(cmd).strip()
 
-        pattern = "userId=([\d]+)"
+        pattern = r"userId=([\d]+)"
 
         if result:
             match = re.search(pattern, result)
