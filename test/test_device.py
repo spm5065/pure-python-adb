@@ -1,5 +1,7 @@
 import os
 import time
+import tempfile
+import pathlib
 
 import pytest
 import socket
@@ -179,6 +181,69 @@ def test_push_with_progress(device):
     assert result
     assert result[-1]["total_size"] == result[-1]["sent_size"]
 
+@pytest.fixture(scope="function")
+def test_filepaths():
+    filepaths = [
+        "toplevel/test1.txt",
+        "toplevel/test2.txt",
+        "toplevel/subdir1/test3.txt",
+        "toplevel/subdir1/test4.txt",
+        "toplevel/subdir1/subdir2/test5.txt",
+        "toplevel/subdir1/subdir2/test6.txt",
+    ]
+    yield filepaths
+
+@pytest.fixture(scope="function")
+def populated_device(device, filepaths):
+    dirpath = "toplevel/subdir1/subdir2"
+
+    device.shell(f"mkdir -p {dirpath}")
+    for path in filepaths:
+        device.shell(f"echo {path} > /data/local/tmp/{path}")
+
+    yield device
+
+    device.shell("rm -rf /data/local/tmp/toplevel")
+
+@pytest.fixture(scope="function")
+def working_dir():
+    with tempfile.TemporaryDirectory() as f:
+        yield pathlib.Path(f)
+
+def test_pull_file(populated_device, working_dir):
+    populated_device.pull(
+        "/data/local/tmp/toplevel/test1.txt",
+        working_dir
+    )
+    dest_path = working_dir / "test1.txt"
+    assert dest_path.is_file()
+    assert dest_path.read_text() == "toplevel/test1.txt"
+
+def test_pull_dir(populated_device, working_dir):
+    populated_device.pull(
+        "/data/local/tmp/toplevel/subdir1/subdir2",
+        working_dir
+    )
+    dest_path = working_dir / "subdir2"
+    filepath1 = dest_path / "test5.txt"
+    filepath2 = dest_path / "test6.txt"
+    assert dest_path.is_dir()
+    assert filepath1.is_file()
+    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt"
+    assert filepath2.is_file()
+    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt"
+
+def test_pull_recursive_dir(populated_device, working_dir, filepaths):
+    populated_device.pull(
+        "data/local/tmp/toplevel",
+        working_dir
+    )
+    assert (working_dir / "toplevel").is_dir()
+    assert (working_dir / "toplevel" / "subdir1").is_dir()
+    for path in filepaths:
+        to_check = working_dir / path
+        assert to_check.is_file()
+        assert to_check.read_text() == path
 
 def test_forward(device):
     device.killforward_all()
