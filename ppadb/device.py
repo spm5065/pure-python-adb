@@ -74,12 +74,36 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
                 for item in files:
                     self._push(root / item, destdir / item, mode, progress)
 
-    def pull(self, src, dest):
+    def _pull(self, src, dest):
         sync_conn = self.sync()
         sync = Sync(sync_conn)
 
         with sync_conn:
             return sync.pull(src, dest)
+        
+    def pull(self, src, dest):
+        #Currently will override dest-- desired?
+        src = PurePosixPath(src)
+        dest = Path(dest)
+
+        dir_string = "IS_DIR"
+        res = self.shell(f"[ -d {src} ] && echo {dir_string}")
+        if dir_string in res:
+            #Get all files in the dir
+            #Pull each
+            dest.mkdir(exist_ok=True)
+            cmd = f"ls -1a {src}"
+            res = self.shell(cmd)
+            contents_list = res.split("\n")
+            contents_list = [
+                x for x in contents_list if x != "." and x != ".." and x != ""
+            ]
+            for element in contents_list:
+                element_src = src / element
+                element_dest = dest / element
+                self.pull(element_src, element_dest)
+        else:
+            self._pull(str(src), str(dest))
 
     def install(
         self,
