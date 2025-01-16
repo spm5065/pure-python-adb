@@ -195,11 +195,11 @@ def test_filepaths():
     yield filepaths
 
 @pytest.fixture(scope="function")
-def populated_device(device, filepaths):
+def populated_device(device, test_filepaths):
     dirpath = "toplevel/subdir1/subdir2"
 
     device.shell(f"mkdir -p {dirpath}")
-    for path in filepaths:
+    for path in test_filepaths:
         device.shell(f"echo {path} > /data/local/tmp/{path}")
 
     yield device
@@ -234,14 +234,14 @@ def test_pull_dir(populated_device, working_dir):
     assert filepath2.is_file()
     assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt"
 
-def test_pull_recursive_dir(populated_device, working_dir, filepaths):
+def test_pull_recursive_dir(populated_device, working_dir, test_filepaths):
     populated_device.pull(
         "data/local/tmp/toplevel",
         working_dir
     )
     assert (working_dir / "toplevel").is_dir()
     assert (working_dir / "toplevel" / "subdir1").is_dir()
-    for path in filepaths:
+    for path in test_filepaths:
         to_check = working_dir / path
         assert to_check.is_file()
         assert to_check.read_text() == path
