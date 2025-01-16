@@ -67,6 +67,7 @@ def test_remote_connect_disconnect(client):
     for index in range(0, 10):
         device = client.device("emulator-5554")
         if device is not None:
+            time.sleep(1)
             break
         else:
             time.sleep(1)
