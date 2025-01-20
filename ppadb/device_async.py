@@ -1,9 +1,3 @@
-try:
-    from asyncio import get_running_loop
-except ImportError:  # pragma: no cover
-    from asyncio import get_event_loop as get_running_loop  # Python 3.6 compatibility
-
-import os
 from pathlib import Path, PurePosixPath
 import re
 
