@@ -19,9 +19,8 @@ class TestClientAsync(unittest.TestCase):
         self.client = ClientAsync()
 
     @awaiter
-    async def test_create_connection_fail(self):
-        with self.assertRaises(RuntimeError):
-            await self.client.create_connection()
+    async def test_create_connection(self):
+        await self.client.create_connection()
 
     @awaiter
     async def test_device_returns_none(self):

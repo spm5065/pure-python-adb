@@ -1,0 +1,23 @@
+name: Format and Lint
+on:
+  workflow_call:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+  push:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Format
+        uses: psf/black@stable
+
+      - name: Lint
+        uses: astral-sh/ruff-action@v3
+        with:
+          src: "./ppadb"

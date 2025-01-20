@@ -1,8 +1,3 @@
-import logging
-import re
-import time
-
-
 class TransportAsync:
     async def transport(self, connection):
         cmd = "host:transport:{}".format(self.serial)
