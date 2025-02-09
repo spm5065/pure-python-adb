@@ -61,6 +61,7 @@ def get_section(name):
     return mapping.get(name)
 """
 
+
 class BatteryStatsSection:
     def __init__(self, id, description, fields):
         self.id = id
@@ -70,13 +71,15 @@ class BatteryStatsSection:
     @staticmethod
     def Load(raw):
         sections = []
-        for line in raw.split('\n'):
+        for line in raw.split("\n"):
             if not line:
                 continue
             id, description, raw_fields = line.split(",", 2)
 
             if raw_fields.strip().startswith('"'):
-                remaining_fields = list(map(lambda item: item.strip(), raw_fields[1:-1].split(",")))
+                remaining_fields = list(
+                    map(lambda item: item.strip(), raw_fields[1:-1].split(","))
+                )
             else:
                 remaining_fields = [raw_fields.strip()]
 
@@ -86,13 +89,16 @@ class BatteryStatsSection:
 
 
 def convert_to_var_name(field):
-    return field.replace(" ", "_")\
-        .replace("-", "_")\
-        .replace("'", "")\
-        .lower()\
-        .replace("wi_fi", "wifi")\
-        .replace("1x", "_1x")\
+    return (
+        field.replace(" ", "_")
+        .replace("-", "_")
+        .replace("'", "")
+        .lower()
+        .replace("wi_fi", "wifi")
+        .replace("1x", "_1x")
         .replace("(mah)", "mah")
+    )
+
 
 def generate():
     sections = BatteryStatsSection.Load(raw_batterystats_fields)
@@ -100,13 +106,17 @@ def generate():
     mapping = []
     for section in sections:
         class_name = section.description.replace(" ", "").replace("-", "")
-        vars = list(map(lambda item: convert_to_var_name(item), section.remaining_fields))
-        init_vars = list(map(lambda item: "        self.{} = {}".format(item, item), vars))
+        vars = list(
+            map(lambda item: convert_to_var_name(item), section.remaining_fields)
+        )
+        init_vars = list(
+            map(lambda item: "        self.{} = {}".format(item, item), vars)
+        )
         code = CLASS_TEMPLATE.format(
             ID=section.id,
             CLASS_NAME=class_name,
             VARS=",".join(vars),
-            INIT_VARS="\n".join(init_vars)
+            INIT_VARS="\n".join(init_vars),
         )
         code_blocks.append(code)
         mapping.append("'{}':{}".format(section.id, class_name))
@@ -115,13 +125,14 @@ def generate():
 
     return "\n".join(code_blocks) + "\n" + mapping_code + "\n" + GET_SECTION
 
+
 if __name__ == "__main__":
     import os
 
     codegen = generate()
     folder_path = os.path.dirname(__file__)
-    file_path = os.path.join(folder_path, "..", "ppadb", "plugins", "device", "batterystats_section.py")
+    file_path = os.path.join(
+        folder_path, "..", "ppadb", "plugins", "device", "batterystats_section.py"
+    )
     with open(file_path, "w") as fp:
         fp.write(codegen)
-
-

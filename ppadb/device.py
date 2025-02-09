@@ -148,8 +148,8 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
         elif m:
             logger.error(m.group(1))
             if "DELETE_FAILED_DEVICE_POLICY_MANAGER" in m.group(1):
-                logger.info('App is device-admin, calling disable-user')
-                self.shell('pm disable-user {}'.format(package))
+                logger.info("App is device-admin, calling disable-user")
+                self.shell("pm disable-user {}".format(package))
                 return self.uninstall(package)
             return False
         else:
