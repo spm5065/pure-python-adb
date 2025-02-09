@@ -12,7 +12,7 @@
 * Adds #85: Include LICENSE in pip package via @jan-janssen
 * Adds #57: Recursive directory push for DeviceAsync class via @JeffLIrion
 * Adds #89: Call disable-user if app is device-admin via @eybisi
-* Change: Device#install and DeviceAsync#install changes param from `grand_all_permissions` to `grant_all_permissions`
+* Change #94: Device#install and DeviceAsync#install changes param from `grand_all_permissions` to `grant_all_permissions`
 
 
 0.2.1 (2019-10-14)
