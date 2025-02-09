@@ -3,13 +3,12 @@ from collections import namedtuple
 
 from ppadb.plugins import Plugin
 
-Size = namedtuple("Size", [
-    'width',
-    'height'
-])
+Size = namedtuple("Size", ["width", "height"])
+
 
 class WM(Plugin):
-    SIZE_RE = r'Physical size:\s([\d]+)x([\d]+)'
+    SIZE_RE = r"Physical size:\s([\d]+)x([\d]+)"
+
     def wm_size(self):
         result = self.shell("wm size")
         match = re.search(self.SIZE_RE, result)

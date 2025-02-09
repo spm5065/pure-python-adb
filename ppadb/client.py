@@ -4,8 +4,9 @@ from ppadb.utils.logger import AdbLogging
 
 logger = AdbLogging.get_logger(__name__)
 
+
 class Client(Host):
-    def __init__(self, host='127.0.0.1', port=5037):
+    def __init__(self, host="127.0.0.1", port=5037):
         self.host = host
         self.port = port
 

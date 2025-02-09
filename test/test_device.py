@@ -9,9 +9,11 @@ from ppadb import ClearError, InstallError
 
 def test_install_uninstall_success(device):
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    result = device.install(os.path.join(dir_path, "resources/apk/app-x86.apk"),
-                            reinstall=True,
-                            downgrade=True)
+    result = device.install(
+        os.path.join(dir_path, "resources/apk/app-x86.apk"),
+        reinstall=True,
+        downgrade=True,
+    )
     assert result is True
 
     with pytest.raises(InstallError) as excinfo:
@@ -19,7 +21,7 @@ def test_install_uninstall_success(device):
 
     assert "INSTALL_FAILED_ALREADY_EXISTS" in str(excinfo.value)
 
-    result = device.is_installed('com.cloudmosa.helloworldapk')
+    result = device.is_installed("com.cloudmosa.helloworldapk")
     assert result is True
 
     result = device.uninstall("com.cloudmosa.helloworldapk")
@@ -28,7 +30,7 @@ def test_install_uninstall_success(device):
     result = device.uninstall("com.cloudmosa.helloworldapk")
     assert result is False
 
-    result = device.is_installed('com.cloudmosa.helloworldapk')
+    result = device.is_installed("com.cloudmosa.helloworldapk")
     assert result is False
 
 
@@ -53,7 +55,10 @@ def test_clear(device):
     with pytest.raises(ClearError) as excinfo:
         result = device.clear("com.android.not.exist.package")
 
-    assert "Package com.android.not.exist.package could not be cleared - [Failed]" in str(excinfo.value)
+    assert (
+        "Package com.android.not.exist.package could not be cleared - [Failed]"
+        in str(excinfo.value)
+    )
 
 
 def test_list_packages(device):
@@ -148,6 +153,16 @@ def test_push_dir(device):
     assert "app-x86.apk" in result
 
 
+def test_push_recurse_dir(device):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    apk_path = os.path.join(dir_path, "resources")
+    device.push(apk_path, "/sdcard")
+
+    result = device.shell("ls /sdcard/resources/apk")
+    assert "app-armeabi-v7a.apk" in result
+    assert "app-x86.apk" in result
+
+
 def test_push_with_progress(device):
     dir_path = os.path.dirname(os.path.realpath(__file__))
     apk_path = os.path.join(dir_path, "resources/apk/app-x86.apk")
@@ -155,11 +170,9 @@ def test_push_with_progress(device):
     result = []
 
     def progress(file_name, total_size, sent_size):
-        result.append({
-            "file_name": file_name,
-            "total_size": total_size,
-            "sent_size": sent_size
-        })
+        result.append(
+            {"file_name": file_name, "total_size": total_size, "sent_size": sent_size}
+        )
 
     device.push(apk_path, "/sdcard/test.apk", progress=progress)
 
@@ -177,15 +190,15 @@ def test_forward(device):
     device.forward("tcp:6002", "tcp:7002")
 
     forward_map = device.list_forward()
-    assert forward_map['tcp:6000'] == "tcp:7000"
-    assert forward_map['tcp:6001'] == "tcp:7001"
-    assert forward_map['tcp:6002'] == "tcp:7002"
+    assert forward_map["tcp:6000"] == "tcp:7000"
+    assert forward_map["tcp:6001"] == "tcp:7001"
+    assert forward_map["tcp:6002"] == "tcp:7002"
 
     device.killforward("tcp:6000")
     forward_map = device.list_forward()
     assert "tcp:6000" not in forward_map
-    assert forward_map['tcp:6001'] == "tcp:7001"
-    assert forward_map['tcp:6002'] == "tcp:7002"
+    assert forward_map["tcp:6001"] == "tcp:7001"
+    assert forward_map["tcp:6002"] == "tcp:7002"
 
     device.killforward_all()
     forward_map = device.list_forward()
@@ -206,7 +219,7 @@ def test_killforward_all(client, device):
     device2.forward("tcp:6002", "tcp:6002")
 
     forward_map = device.list_forward()
-    assert forward_map['tcp:6001'] == "tcp:6001"
+    assert forward_map["tcp:6001"] == "tcp:6001"
     assert "tcp:6002" not in forward_map
 
     device.killforward_all()

@@ -19,7 +19,7 @@ class HostAsync:
 
         devices = []
 
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             if not line:
                 break
 

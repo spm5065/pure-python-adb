@@ -9,7 +9,7 @@ logger = AdbLogging.get_logger(__name__)
 
 
 class ConnectionAsync:
-    def __init__(self, host='localhost', port=5037, timeout=None):
+    def __init__(self, host="localhost", port=5037, timeout=None):
         self.host = host
         self.port = int(port)
         self.timeout = timeout
@@ -28,18 +28,27 @@ class ConnectionAsync:
 
         try:
             if self.timeout:
-                self.reader, self.writer = await asyncio.wait_for(asyncio.open_connection(self.host, self.port), self.timeout)
+                self.reader, self.writer = await asyncio.wait_for(
+                    asyncio.open_connection(self.host, self.port), self.timeout
+                )
             else:
-                self.reader, self.writer = await asyncio.open_connection(self.host, self.port)
+                self.reader, self.writer = await asyncio.open_connection(
+                    self.host, self.port
+                )
 
         except (OSError, asyncio.TimeoutError) as e:
-            raise RuntimeError("ERROR: connecting to {}:{} {}.\nIs adb running on your computer?".format(self.host, self.port, e))
+            await self.close()
+            raise RuntimeError(
+                "ERROR: connecting to {}:{} {}.\nIs adb running on your computer?".format(
+                    self.host, self.port, e
+                )
+            )
 
         return self
 
     async def close(self):
         logger.debug("Connection closed...")
-        
+
         if self.writer:
             try:
                 self.writer.close()
@@ -63,8 +72,8 @@ class ConnectionAsync:
         await asyncio.wait_for(self.writer.drain(), self.timeout)
 
     async def receive(self):
-        nob = int((await self._recv(4)).decode('utf-8'), 16)
-        return (await self._recv(nob)).decode('utf-8')
+        nob = int((await self._recv(4)).decode("utf-8"), 16)
+        return (await self._recv(nob)).decode("utf-8")
 
     async def send(self, msg):
         msg = Protocol.encode_data(msg)
@@ -73,9 +82,9 @@ class ConnectionAsync:
         return await self._check_status()
 
     async def _check_status(self):
-        recv = (await self._recv(4)).decode('utf-8')
+        recv = (await self._recv(4)).decode("utf-8")
         if recv != Protocol.OKAY:
-            error = (await self._recv(1024)).decode('utf-8')
+            error = (await self._recv(1024)).decode("utf-8")
             raise RuntimeError("ERROR: {} {}".format(repr(recv), error))
 
         return True

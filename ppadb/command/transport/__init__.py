@@ -27,7 +27,7 @@ class Transport(Command):
         else:
             result = conn.read_all()
             conn.close()
-            return result.decode('utf-8')
+            return result.decode("utf-8")
 
     def sync(self):
         conn = self.create_connection()
@@ -45,8 +45,8 @@ class Transport(Command):
             conn.send(cmd)
             result = conn.read_all()
 
-        if result and len(result) > 5 and result[5] == 0x0d:
-            return result.replace(b'\r\n', b'\n')
+        if result and len(result) > 5 and result[5] == 0x0D:
+            return result.replace(b"\r\n", b"\n")
         else:
             return result
 
@@ -70,7 +70,7 @@ class Transport(Command):
 
         result_pattern = r"^feature:(.*?)(?:=(.*?))?\r?$"
         features = {}
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             m = re.match(result_pattern, line)
             if m:
                 value = True if m.group(2) is None else m.group(2)
@@ -83,7 +83,7 @@ class Transport(Command):
         result_pattern = r"^package:(.*?)\r?$"
 
         packages = []
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             m = re.match(result_pattern, line)
             if m:
                 packages.append(m.group(1))
@@ -95,7 +95,7 @@ class Transport(Command):
         result_pattern = r"^\[([\s\S]*?)\]: \[([\s\S]*?)\]\r?$"
 
         properties = {}
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             m = re.match(result_pattern, line)
             if m:
                 properties[m.group(1)] = m.group(2)
@@ -110,19 +110,24 @@ class Transport(Command):
             result = conn.receive()
 
         reverses = []
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             if not line:
                 continue
 
             serial, remote, local = line.split()
-            reverses.append(
-                {
-                    'remote': remote,
-                    'local': local
-                }
-            )
+            reverses.append({"remote": remote, "local": local})
 
         return reverses
+
+    def remove_reverse(self, remote):
+        cmd = "reverse:killforward:{}".format(remote)
+        conn = self.create_connection()
+        with conn:
+            conn.send(cmd)
+
+    def remove_reverse_all(self):
+        for reverse in self.list_reverses():
+            self.remove_reverse(reverse["remote"])
 
     def local(self, path):
         if ":" not in path:
@@ -162,10 +167,7 @@ class Transport(Command):
         return True
 
     def reverse(self, remote, local):
-        cmd = "reverse:forward:{remote}:{local}".format(
-            remote=remote,
-            local=local
-        )
+        cmd = "reverse:forward:{remote};{local}".format(remote=remote, local=local)
 
         conn = self.create_connection()
         with conn:
@@ -181,7 +183,7 @@ class Transport(Command):
         conn = self.create_connection()
         with conn:
             conn.send("root:")
-            result = conn.read_all().decode('utf-8')
+            result = conn.read_all().decode("utf-8")
 
             if "restarting adbd as root" in result:
                 return True
@@ -193,7 +195,7 @@ class Transport(Command):
         :param timeout: second
         :param timedelta: second
         """
-        cmd = 'getprop sys.boot_completed'
+        cmd = "getprop sys.boot_completed"
 
         end_time = time.time() + timeout
 

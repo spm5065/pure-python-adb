@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class Sync:
-    TEMP_PATH = '/data/local/tmp'
+    TEMP_PATH = "/data/local/tmp"
     DEFAULT_CHMOD = 0o644
     DATA_MAX_LENGTH = 65536
 
@@ -39,14 +39,11 @@ class Sync:
 
         # SEND
         mode = mode | S_IFREG
-        args = "{dest},{mode}".format(
-            dest=dest,
-            mode=mode
-        )
+        args = "{dest},{mode}".format(dest=dest, mode=mode)
         self._send_str(Protocol.SEND, args)
 
         # DATA
-        with open(src, 'rb') as stream:
+        with open(src, "rb") as stream:
             while True:
                 chunk = stream.read(self.DATA_MAX_LENGTH)
                 if not chunk:
@@ -70,9 +67,9 @@ class Sync:
         self._send_str(Protocol.RECV, src)
 
         # DATA
-        with open(dest, 'wb') as stream:
+        with open(dest, "wb") as stream:
             while True:
-                flag = self.connection.read(4).decode('utf-8')
+                flag = self.connection.read(4).decode("utf-8")
 
                 if flag == Protocol.DATA:
                     data = self._read_data()
@@ -81,13 +78,13 @@ class Sync:
                     self.connection.read(4)
                     return
                 elif flag == Protocol.FAIL:
-                    return self._read_data().decode('utf-8')
+                    return self._read_data().decode("utf-8")
 
     def _integer(self, little_endian):
         return struct.unpack("<I", little_endian)
 
     def _little_endian(self, n):
-        return struct.pack('<I', n)
+        return struct.pack("<I", n)
 
     def _read_data(self):
         length = self._integer(self.connection.read(4))[0]
@@ -111,7 +108,7 @@ class Sync:
             {4}{4}{str length}
         """
         logger.debug("{} {}".format(cmd, args))
-        args = args.encode('utf-8')
+        args = args.encode("utf-8")
 
         le_args_len = self._little_endian(len(args))
         data = cmd.encode() + le_args_len + args

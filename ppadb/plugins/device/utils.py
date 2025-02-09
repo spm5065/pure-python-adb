@@ -13,7 +13,16 @@ class Activity:
 
 
 class MemInfo:
-    def __init__(self, pss, private_dirty, private_clean, swapped_dirty, heap_size, heap_alloc, heap_free):
+    def __init__(
+        self,
+        pss,
+        private_dirty,
+        private_clean,
+        swapped_dirty,
+        heap_size,
+        heap_alloc,
+        heap_free,
+    ):
         self.pss = int(pss)
         self.private_dirty = int(private_dirty)
         self.private_clean = int(private_clean)
@@ -37,23 +46,27 @@ class Utils(Plugin):
         result = self.shell(cmd)
 
         activities = []
-        for line in result.split('\n'):
+        for line in result.split("\n"):
             match = re.search(pattern, line)
             if match:
-                activities.append(Activity(match.group(1), match.group(2), int(match.group(3))))
+                activities.append(
+                    Activity(match.group(1), match.group(2), int(match.group(3)))
+                )
 
         return activities
 
     def get_meminfo(self, package_name):
-        total_meminfo_re = re.compile(r'\s*TOTAL\s*(?P<pss>\d+)'
-                                      r'\s*(?P<private_dirty>\d+)'
-                                      r'\s*(?P<private_clean>\d+)'
-                                      r'\s*(?P<swapped_dirty>\d+)'
-                                      r'\s*(?P<heap_size>\d+)'
-                                      r'\s*(?P<heap_alloc>\d+)'
-                                      r'\s*(?P<heap_free>\d+)')
+        total_meminfo_re = re.compile(
+            r'\s*TOTAL\s*(?P<pss>\d+)'
+            r'\s*(?P<private_dirty>\d+)'
+            r'\s*(?P<private_clean>\d+)'
+            r'\s*(?P<swapped_dirty>\d+)'
+            r'\s*(?P<heap_size>\d+)'
+            r'\s*(?P<heap_alloc>\d+)'
+            r'\s*(?P<heap_free>\d+)'
+        )
 
-        cmd = 'dumpsys meminfo {}'.format(package_name)
+        cmd = "dumpsys meminfo {}".format(package_name)
         result = self.shell(cmd)
         match = total_meminfo_re.search(result, 0)
 
@@ -79,7 +92,7 @@ class Utils(Plugin):
             return None
 
     def get_uid(self, package_name):
-        cmd = 'dumpsys package {} | grep userId'.format(package_name)
+        cmd = "dumpsys package {} | grep userId".format(package_name)
         result = self.shell(cmd).strip()
 
         pattern = r"userId=([\d]+)"
@@ -96,7 +109,7 @@ class Utils(Plugin):
         return list(map(lambda line: line.strip(), result.split("\n")))
 
     def get_package_version_name(self, package_name):
-        cmd = 'dumpsys package {} | grep versionName'.format(package_name)
+        cmd = "dumpsys package {} | grep versionName".format(package_name)
         result = self.shell(cmd).strip()
 
         pattern = r"versionName=([\d\.]+)"
