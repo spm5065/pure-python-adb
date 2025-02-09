@@ -81,7 +81,7 @@ class DeviceAsync(TransportAsync):
         shared_mass_storage=False,  # -s
         internal_system_memory=False,  # -f
         downgrade=False,  # -d
-        grand_all_permissions=False,  # -g
+        grant_all_permissions=False,  # -g
     ):
         dest = SyncAsync.temp(path)
 
@@ -105,7 +105,7 @@ class DeviceAsync(TransportAsync):
             parameters.append("-f")
         if downgrade:
             parameters.append("-d")
-        if grand_all_permissions:
+        if grant_all_permissions:
             parameters.append("-g")
 
         try:
