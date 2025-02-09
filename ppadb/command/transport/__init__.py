@@ -37,11 +37,13 @@ class Transport(Command):
 
         return conn
 
-    def screencap(self):
+    def screencap(self, optional_args=None):
         conn = self.create_connection()
 
         with conn:
             cmd = "shell:/system/bin/screencap -p"
+            if optional_args is not None:
+                cmd = cmd + " " + optional_args
             conn.send(cmd)
             result = conn.read_all()
 
