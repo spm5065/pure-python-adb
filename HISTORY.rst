@@ -4,6 +4,7 @@
 * Fixes #111: Invalid escape sequence via @eamanu and @mib1185
 * Fixes #110: Add ability to pass extra arguments to `screencap` commands for waydroid via @CloCkWeRX
 * Fixes #88: missing return in ppadb.command.transport: Transport.shell() for custom handler via @roxen
+* Fixes #60: Close socket if the connection fails via @JeffLIrion
 * Adds #85: Include LICENSE in pip package via @jan-janssen
 * Adds #57: Recursive directory push for DeviceAsync class via @JeffLIrion
 * Adds #89: Call disable-user if app is device-admin via @eybisi
