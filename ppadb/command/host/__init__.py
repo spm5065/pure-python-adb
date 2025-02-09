@@ -3,7 +3,7 @@ from ppadb.command import Command
 
 
 class Host(Command):
-    CONNECT_RESULT_PATTERN = "(connected to|already connected)"
+    CONNECT_RESULT_PATTERN = r"(connected to|already connected)"
 
     OFFLINE = "offline"
     DEVICE = "device"
