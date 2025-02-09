@@ -1,3 +1,15 @@
+0.3.0 (Unreleased)
+--------------------
+
+* Fixes #111: Invalid escape sequence via @eamanu and @mib1185
+* Fixes #110: Add ability to pass extra arguments to `screencap` commands for waydroid via @CloCkWeRX
+* Fixes #88: missing return in ppadb.command.transport: Transport.shell() for custom handler via @roxen
+* Adds #85: Include LICENSE in pip package via @jan-janssen
+* Adds #57: Recursive directory push for DeviceAsync class via @JeffLIrion
+* Adds #89: Call disable-user if app is device-admin via @eybisi
+* Change: Device#install and DeviceAsync#install changes param from `grand_all_permissions` to `grant_all_permissions`
+
+
 0.2.1 (2019-10-14)
 --------------------
 
