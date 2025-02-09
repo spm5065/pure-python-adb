@@ -6,7 +6,7 @@
 * Fixes #88: Missing return in ppadb.command.transport: Transport.shell() for custom handler via @roxen
 * Fixes #60: Close socket if the connection fails via @JeffLIrion
 * Fixes #64: ADB reverse command via @Hamz-a
-* Fixes incorrect timestamp type in asynchronous push via @slicen
+* Fixes #92: incorrect timestamp type in asynchronous push via @slicen and @GeekDuanLian
 * Adds #65: Added support to remove reverses via @Hamz-a
 * Adds #67: asynchronous install and uninstall commands via @slicen
 * Adds #85: Include LICENSE in pip package via @jan-janssen
