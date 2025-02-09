@@ -41,7 +41,7 @@ class Utils(Plugin):
             return None
 
     def get_top_activities(self):
-        pattern = "ACTIVITY\s([\w\.]+)/([\w\.]+)\s[\w\d]+\spid=([\d]+)"
+        pattern = r"ACTIVITY\s([\w\.]+)/([\w\.]+)\s[\w\d]+\spid=([\d]+)"
         cmd = "dumpsys activity top | grep ACTIVITY"
         result = self.shell(cmd)
 
@@ -57,13 +57,13 @@ class Utils(Plugin):
 
     def get_meminfo(self, package_name):
         total_meminfo_re = re.compile(
-            "\s*TOTAL\s*(?P<pss>\d+)"
-            "\s*(?P<private_dirty>\d+)"
-            "\s*(?P<private_clean>\d+)"
-            "\s*(?P<swapped_dirty>\d+)"
-            "\s*(?P<heap_size>\d+)"
-            "\s*(?P<heap_alloc>\d+)"
-            "\s*(?P<heap_free>\d+)"
+            r"\s*TOTAL\s*(?P<pss>\d+)"
+            r"\s*(?P<private_dirty>\d+)"
+            r"\s*(?P<private_clean>\d+)"
+            r"\s*(?P<swapped_dirty>\d+)"
+            r"\s*(?P<heap_size>\d+)"
+            r"\s*(?P<heap_alloc>\d+)"
+            r"\s*(?P<heap_free>\d+)"
         )
 
         cmd = "dumpsys meminfo {}".format(package_name)
@@ -95,7 +95,7 @@ class Utils(Plugin):
         cmd = "dumpsys package {} | grep userId".format(package_name)
         result = self.shell(cmd).strip()
 
-        pattern = "userId=([\d]+)"
+        pattern = r"userId=([\d]+)"
 
         if result:
             match = re.search(pattern, result)
@@ -112,7 +112,7 @@ class Utils(Plugin):
         cmd = "dumpsys package {} | grep versionName".format(package_name)
         result = self.shell(cmd).strip()
 
-        pattern = "versionName=([\d\.]+)"
+        pattern = r"versionName=([\d\.]+)"
 
         if result:
             match = re.search(pattern, result)

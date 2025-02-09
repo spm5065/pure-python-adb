@@ -2,7 +2,7 @@ from ppadb.device_async import DeviceAsync
 
 
 class HostAsync:
-    CONNECT_RESULT_PATTERN = "(connected to|already connected)"
+    CONNECT_RESULT_PATTERN = r"(connected to|already connected)"
 
     OFFLINE = "offline"
     DEVICE = "device"
