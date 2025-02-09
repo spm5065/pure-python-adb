@@ -21,7 +21,7 @@ def _get_src_info(src):
 
 
 class DeviceAsync(TransportAsync):
-    INSTALL_RESULT_PATTERN = "(Success|Failure|Error)\s?(.*)"
+    INSTALL_RESULT_PATTERN = r"(Success|Failure|Error)\s?(.*)"
     UNINSTALL_RESULT_PATTERN = "(Success|Failure.*|.*Unknown package:.*)"
 
     def __init__(self, client, serial):
