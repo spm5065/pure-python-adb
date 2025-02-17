@@ -1,7 +1,8 @@
-The package name has been renamed from 'adb' to 'ppadb'
+This package is a fork of ppadb (https://github.com/swind/pure-python-adb)
 =========================================================
+Pure Python ADB was not being maintained, so it was forked to give new life to it.
 
-From version **v0.2.1-dev**, the package name has been renamed from 'adb' to 'ppadb' to avoid conflit with Google `google/python-adb`_
+As such, it has been renamed to ppadb-reborn on PyPi.
 
 
 Introduction
@@ -13,11 +14,11 @@ You can use it to communicate with adb server (not the adb daemon on the device/
 
 When you use `adb` command
 
-.. image:: https://raw.githubusercontent.com/Swind/pure-python-adb/master/docs/adb_cli.png
+.. image:: https://raw.githubusercontent.com/spm5065/pure-python-adb/master/docs/adb_cli.png
 
 Now you can use `pure-python-adb` to connect to adb server as adb command line
 
-.. image:: https://raw.githubusercontent.com/Swind/pure-python-adb/master/docs/adb_pure_python_adb.png
+.. image:: https://raw.githubusercontent.com/spm5065/pure-python-adb/master/docs/adb_pure_python_adb.png
 
 This package supports most of the adb command line tool's functionality.
 
@@ -30,14 +31,14 @@ This package supports most of the adb command line tool's functionality.
 Requirements
 ============
 
-Python 3.6+
+Python 3.12+
 
 Installation
 ============
 
 .. code-block:: console
 
-    $pip install -U pure-python-adb
+    $pip install -U ppadb-reborn
 
 Examples
 ========
