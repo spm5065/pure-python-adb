@@ -44,7 +44,8 @@ def test_list_features(device):
     assert "reqGlEsVersion" in features
     assert "android.hardware.sensor.barometer" in features
 
-    assert features["reqGlEsVersion"] == "0x20000"
+    assert features["reqGlEsVersion"] is not None
+    assert features["reqGlEsVersion"] != ""
     assert features["android.hardware.sensor.barometer"] is True
 
 

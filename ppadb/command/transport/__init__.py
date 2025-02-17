@@ -63,7 +63,7 @@ class Transport(Command):
             raise ClearError(package, result.strip())
 
     def framebuffer(self):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def list_features(self):
         result = self.shell("pm list features 2>/dev/null")
@@ -147,7 +147,7 @@ class Transport(Command):
         return conn
 
     def logcat(self, clear=False):
-        raise NotImplemented()
+        raise NotImplementedError()
 
     def reboot(self):
         conn = self.create_connection()

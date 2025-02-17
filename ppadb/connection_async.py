@@ -1,6 +1,4 @@
 import asyncio
-import struct
-import socket
 
 from ppadb.protocol import Protocol
 from ppadb.utils.logger import AdbLogging

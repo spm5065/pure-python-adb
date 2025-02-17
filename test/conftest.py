@@ -1,20 +1,20 @@
+import logging
+import os
+import pytest
 import time
 import Exscript.protocols.telnetlib as telnetlib
 
-import pytest
-
 from ppadb.client import Client as AdbClient
 from ppadb.device import Device as AdbDevice
-import logging
 
 logger = logging.getLogger(__name__)
 
-adb_host = "emulator"
-# adb_host = "127.0.0.1"
+# adb_host = "emulator"
 # adb_host = "172.20.0.2"
-adb_port = 5037
-device_serial = "emulator-5554"
-emulator_port = 5554
+adb_host = os.environ.get("ADB_HOST", "127.0.0.1")
+adb_port = int(os.environ.get("ADB_PORT", "5037"))
+device_serial = os.environ.get("DEVICE_SERIAL", "emulator-5554")
+emulator_port = int(os.environ.get("EMULATOR_PORT", "5554"))
 
 
 class EmulatorConsole:
