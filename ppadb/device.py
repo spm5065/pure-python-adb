@@ -1,5 +1,4 @@
 import re
-import os
 from pathlib import Path, PurePosixPath
 
 from ppadb.command.transport import Transport

@@ -1,5 +1,4 @@
 import struct
-import time
 import os
 
 from ppadb.protocol import Protocol
@@ -61,7 +60,6 @@ class Sync:
         self.connection._check_status()
 
     def pull(self, src, dest):
-        error = None
 
         # RECV
         self._send_str(Protocol.RECV, src)
