@@ -233,7 +233,7 @@ def test_pull_dir(populated_device, working_dir):
     filepath2 = dest_path / "test6.txt"
     assert dest_path.is_dir()
     assert filepath1.is_file()
-    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt\n"
+    assert filepath1.read_text() == "toplevel/subdir1/subdir2/test5.txt\n"
     assert filepath2.is_file()
     assert filepath2.read_text() == "toplevel/subdir1/subdir2/test6.txt\n"
 
