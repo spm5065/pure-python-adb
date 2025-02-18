@@ -31,8 +31,8 @@ except ImportError:
 
 
 class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats):
-    INSTALL_RESULT_PATTERN = "(Success|Failure|Error)\s?(.*)"
-    UNINSTALL_RESULT_PATTERN = "(Success|Failure.*|.*Unknown package:.*)"
+    INSTALL_RESULT_PATTERN = r"(Success|Failure|Error)\s?(.*)"
+    UNINSTALL_RESULT_PATTERN = r"(Success|Failure.*|.*Unknown package:.*)"
 
     def __init__(self, client, serial):
         self.client = client
@@ -90,7 +90,7 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
         shared_mass_storage=False,  # -s
         internal_system_memory=False,  # -f
         downgrade=False,  # -d
-        grand_all_permissions=False,  # -g
+        grant_all_permissions=False,  # -g
     ):
         dest = Sync.temp(path)
         self.push(path, dest)
@@ -110,7 +110,7 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
             parameters.append("-f")
         if downgrade:
             parameters.append("-d")
-        if grand_all_permissions:
+        if grant_all_permissions:
             parameters.append("-g")
 
         try:
@@ -146,6 +146,10 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
             return True
         elif m:
             logger.error(m.group(1))
+            if "DELETE_FAILED_DEVICE_POLICY_MANAGER" in m.group(1):
+                logger.info("App is device-admin, calling disable-user")
+                self.shell("pm disable-user {}".format(package))
+                return self.uninstall(package)
             return False
         else:
             logger.error("There is no message after uninstalling")

@@ -23,9 +23,13 @@ class TransportAsync:
 
         return conn
 
-    async def screencap(self):
+    # Take a screenshot. Optionally, you can pass
+    # additional command line arguments, ie "2>/dev/null"
+    async def screencap(self, optional_args=None):
         async with await self.create_connection() as conn:
             cmd = "shell:/system/bin/screencap -p"
+            if optional_args is not None:
+                cmd = cmd + " " + optional_args
             await conn.send(cmd)
             result = await conn.read_all()
 
