@@ -1,6 +1,4 @@
-"""Unit tests for `ConnectionAsync` class.
-
-"""
+"""Unit tests for `ConnectionAsync` class."""
 
 import asyncio
 import sys

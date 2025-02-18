@@ -11,3 +11,4 @@ venv
 .venv
 test_result.xml
 .python-version
+build/

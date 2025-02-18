@@ -97,7 +97,7 @@ def device(request, client, serial):
         try:
             console = EmulatorConsole(host=adb_host, port=emulator_port)
             return console
-        except Exception as e:
+        except Exception:
             return None
 
     def is_boot_completed():
