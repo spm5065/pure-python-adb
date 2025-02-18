@@ -216,14 +216,18 @@ def working_dir():
 
 
 def test_pull_file(populated_device, working_dir):
-    populated_device.pull("/data/local/tmp/toplevel/test1.txt", working_dir / "test1.txt")
+    populated_device.pull(
+        "/data/local/tmp/toplevel/test1.txt", working_dir / "test1.txt"
+    )
     dest_path = working_dir / "test1.txt"
     assert dest_path.is_file()
     assert dest_path.read_text() == "toplevel/test1.txt"
 
 
 def test_pull_dir(populated_device, working_dir):
-    populated_device.pull("/data/local/tmp/toplevel/subdir1/subdir2", working_dir / "subdir2")
+    populated_device.pull(
+        "/data/local/tmp/toplevel/subdir1/subdir2", working_dir / "subdir2"
+    )
     dest_path = working_dir / "subdir2"
     filepath1 = dest_path / "test5.txt"
     filepath2 = dest_path / "test6.txt"
