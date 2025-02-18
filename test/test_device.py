@@ -200,7 +200,7 @@ def test_filepaths():
 def populated_device(device, test_filepaths):
     dirpath = "toplevel/subdir1/subdir2"
 
-    device.shell(f"mkdir -p {dirpath}")
+    device.shell(f"mkdir -p /data/local/tmp/{dirpath}")
     print(device.shell(f"ls /data/local/tmp"))
     for path in test_filepaths:
         device.shell(f"echo {path} > /data/local/tmp/{path}")
