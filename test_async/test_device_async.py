@@ -1,14 +1,9 @@
-"""Unit tests for the `DeviceAsync` class.
+"""Unit tests for the `DeviceAsync` class."""
 
-"""
-
-import asyncio
-from contextlib import asynccontextmanager
 import os
-import pathlib
 import sys
 import unittest
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 
 sys.path.insert(0, "..")
 
