@@ -203,6 +203,7 @@ def populated_device(device, test_filepaths):
     device.shell(f"mkdir -p {dirpath}")
     for path in test_filepaths:
         device.shell(f"echo {path} > /data/local/tmp/{path}")
+        print(device.shell(f"cat /data/local/tmp/{path}"))
 
     yield device
 
