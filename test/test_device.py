@@ -235,7 +235,7 @@ def test_pull_dir(populated_device, working_dir):
     assert filepath1.is_file()
     assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt\n"
     assert filepath2.is_file()
-    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt\n"
+    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test6.txt\n"
 
 
 def test_pull_recursive_dir(populated_device, working_dir, test_filepaths):
