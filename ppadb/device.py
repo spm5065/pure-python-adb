@@ -79,17 +79,17 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
 
         with sync_conn:
             return sync.pull(src, dest)
-        
+
     def pull(self, src, dest):
-        #Currently will override dest-- desired?
+        # Currently will override dest-- desired?
         src = PurePosixPath(src)
         dest = Path(dest)
 
         dir_string = "IS_DIR"
         res = self.shell(f"[ -d {src} ] && echo {dir_string}")
         if dir_string in res:
-            #Get all files in the dir
-            #Pull each
+            # Get all files in the dir
+            # Pull each
             dest.mkdir(exist_ok=True)
             cmd = f"ls -1a {src}"
             res = self.shell(cmd)
