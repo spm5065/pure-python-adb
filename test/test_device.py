@@ -201,10 +201,8 @@ def populated_device(device, test_filepaths):
     dirpath = "toplevel/subdir1/subdir2"
 
     device.shell(f"mkdir -p /data/local/tmp/{dirpath}")
-    print(device.shell(f"ls /data/local/tmp"))
     for path in test_filepaths:
         device.shell(f"echo {path} > /data/local/tmp/{path}")
-        print(device.shell(f"cat /data/local/tmp/{path}"))
 
     yield device
 
@@ -223,7 +221,7 @@ def test_pull_file(populated_device, working_dir):
     )
     dest_path = working_dir / "test1.txt"
     assert dest_path.is_file()
-    assert dest_path.read_text() == "toplevel/test1.txt"
+    assert dest_path.read_text() == "toplevel/test1.txt\n"
 
 
 def test_pull_dir(populated_device, working_dir):
@@ -235,9 +233,9 @@ def test_pull_dir(populated_device, working_dir):
     filepath2 = dest_path / "test6.txt"
     assert dest_path.is_dir()
     assert filepath1.is_file()
-    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt"
+    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt\n"
     assert filepath2.is_file()
-    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt"
+    assert filepath2.read_text() == "toplevel/subdir1/subdir2/test5.txt\n"
 
 
 def test_pull_recursive_dir(populated_device, working_dir, test_filepaths):
@@ -247,7 +245,7 @@ def test_pull_recursive_dir(populated_device, working_dir, test_filepaths):
     for path in test_filepaths:
         to_check = working_dir / path
         assert to_check.is_file()
-        assert to_check.read_text() == path
+        assert to_check.read_text() == f"{path}\n"
 
 
 def test_forward(device):
