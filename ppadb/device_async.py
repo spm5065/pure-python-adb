@@ -58,12 +58,39 @@ class DeviceAsync(TransportAsync):
                 for item in files:
                     await self._push(root / item, destdir / item, mode, progress)
 
-    async def pull(self, src, dest):
+    async def _pull(self, src, dest):
         sync_conn = await self.sync()
         sync = SyncAsync(sync_conn)
 
         async with sync_conn:
             return await sync.pull(src, dest)
+
+    async def pull(self, src, dest):
+        src = PurePosixPath(src)
+        dest = Path(dest)
+
+        dir_string = "IS_DIR"
+        res = await self.shell(f"[ -d {src} ] && echo {dir_string}")
+        if dir_string in res:
+            # Get all files in the dir
+            # Pull each
+            dest.mkdir(exist_ok=True)
+            cmd = f"ls -1a {src}"
+            res = await self.shell(cmd)
+            contents_list = res.split("\n")
+            contents_list = [
+                x for x in contents_list if x != "." and x != ".." and x != ""
+            ]
+            for element in contents_list:
+                element_src = src / element
+                element_dest = dest / element
+                await self.pull(element_src, element_dest)
+        else:
+            file_string = "IS_FILE"
+            res = await self.shell(f"[ -f {src} ] && echo {file_string}")
+            if file_string not in res:
+                raise FileNotFoundError(f"Cannot find {src} on device")
+            await self._pull(str(src), str(dest))
 
     async def install(
         self,
