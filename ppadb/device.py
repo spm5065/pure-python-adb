@@ -81,7 +81,6 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
             return sync.pull(src, dest)
 
     def pull(self, src, dest):
-        # Currently will override dest-- desired?
         src = PurePosixPath(src)
         dest = Path(dest)
 
@@ -102,6 +101,10 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
                 element_dest = dest / element
                 self.pull(element_src, element_dest)
         else:
+            file_string = "IS_FILE"
+            res = self.shell(f"[ -f {src} ] && echo {file_string}")
+            if file_string not in res:
+                raise FileNotFoundError(f"Cannot find {src} on device")
             self._pull(str(src), str(dest))
 
     def install(
