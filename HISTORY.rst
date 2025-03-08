@@ -14,6 +14,7 @@ When it was no longer being maintained, it was forked to create Pure Python ADB 
 * Fixes swind#60: Close socket if the connection fails via `@JeffLIrion`_
 * Fixes swind#64: ADB reverse command via `@Hamz-a`_
 * Fixes swind#92: incorrect timestamp type in asynchronous push via `@slicen`_ and `@GeekDuanLian`_
+* Adds #2: Pull directory via `@ACButcher`_
 * Adds swind#65: Added support to remove reverses via `@Hamz-a`_
 * Adds swind#67: asynchronous install and uninstall commands via `@slicen`_
 * Adds swind#85: Include LICENSE in pip package via `@jan-janssen`_
