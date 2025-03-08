@@ -35,6 +35,8 @@ jobs:
             #emulator-options: -no-boot-anim
           script: |
             pip install '.[async,dev]'
+            pip install -r requirements.txt
+            pip install pytest
             python3 -m pytest test -s -v --junitxml=junit/test-results.xml
             python3 -m pytest test_async -s -v --junitxml=junit/test-async-results.xml
 
