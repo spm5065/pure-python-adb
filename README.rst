@@ -1,5 +1,6 @@
-This package is a fork of ppadb (https://github.com/swind/pure-python-adb)
+Pure Python ADB Reborn
 =========================================================
+This package is a fork of Pure Python ADB (https://github.com/swind/pure-python-adb)
 Pure Python ADB was not being maintained, so it was forked to give new life to it.
 
 As such, it has been renamed to ppadb-reborn on PyPi.

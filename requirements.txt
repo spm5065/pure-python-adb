@@ -1,3 +1,7 @@
-pytest
 Exscript
 aiofiles >= 0.4.0
+
+# Dev
+pytest[dev]
+black[dev]
+ruff[dev]

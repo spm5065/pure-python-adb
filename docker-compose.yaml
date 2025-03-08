@@ -10,7 +10,7 @@ services:
     environment:
      - PYTHONPATH=/code
      - PYTHONUNBUFFERED=0
-    command: sh -c "pip install -r requirements.txt;py.test test -s -v --junit-xml test_result.xml;py.test test_async -s -v --junit-xml test_result_async.xml;"
+    command: sh -c "pip install .[dev];py.test test -s -v --junit-xml test_result.xml;py.test test_async -s -v --junit-xml test_result_async.xml;"
 
   emulator:
     image: swind/android-emulator:android_28
