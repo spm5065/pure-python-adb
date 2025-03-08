@@ -247,11 +247,12 @@ def test_pull_recursive_dir(populated_device, working_dir, test_filepaths):
         assert to_check.is_file()
         assert to_check.read_text() == f"{path}\n"
 
+
 def test_pull_nonexisting(device, working_dir):
     src = "data/local/tmp/dklsfalkjhvcnsdfalvfds"
     with pytest.raises(Exception) as excinfo:
         device.pull(src, working_dir / "non_existent")
-    
+
     assert str(excinfo.value) == f"Cannot find {src} on device"
 
 
