@@ -1,5 +1,6 @@
 """Unit tests for the `ClientAsync` class."""
 
+import asyncio
 import sys
 import unittest
 
