@@ -139,6 +139,9 @@ class TestDevice(unittest.TestCase):
         with async_patch(
             "asyncio.open_connection",
             return_value=(FakeStreamReader(), FakeStreamWriter()),
+        ), async_patch(
+            "ppadb.device_async.DeviceAsync.shell",
+            return_value=["", "IS_FILE"]
         ):
             with async_patch(
                 "{}.FakeStreamReader.read".format(__name__),
@@ -160,6 +163,9 @@ class TestDevice(unittest.TestCase):
         with async_patch(
             "asyncio.open_connection",
             return_value=(FakeStreamReader(), FakeStreamWriter()),
+        ), async_patch(
+            "ppadb.device_async.DeviceAsync.shell",
+            return_value=["", "IS_FILE"]
         ):
             with async_patch(
                 "{}.FakeStreamReader.read".format(__name__),
