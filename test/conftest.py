@@ -9,8 +9,6 @@ from ppadb.device import Device as AdbDevice
 
 logger = logging.getLogger(__name__)
 
-# adb_host = "emulator"
-# adb_host = "172.20.0.2"
 adb_host = os.environ.get("ADB_HOST", "127.0.0.1")
 adb_port = int(os.environ.get("ADB_PORT", "5037"))
 device_serial = os.environ.get("DEVICE_SERIAL", "emulator-5554")
@@ -99,7 +97,7 @@ def device(request, client, serial):
         try:
             console = EmulatorConsole(host=adb_host, port=emulator_port)
             return console
-        except Exception as e:
+        except Exception:
             return None
 
     def is_boot_completed():

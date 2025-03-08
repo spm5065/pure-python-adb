@@ -1,14 +1,9 @@
-"""Unit tests for the `DeviceAsync` class.
+"""Unit tests for the `DeviceAsync` class."""
 
-"""
-
-import asyncio
-from contextlib import asynccontextmanager
 import os
-import pathlib
 import sys
 import unittest
-from unittest.mock import mock_open, patch
+from unittest.mock import patch
 
 sys.path.insert(0, "..")
 
@@ -144,6 +139,8 @@ class TestDevice(unittest.TestCase):
         with async_patch(
             "asyncio.open_connection",
             return_value=(FakeStreamReader(), FakeStreamWriter()),
+        ), async_patch(
+            "ppadb.device_async.DeviceAsync.shell", return_value=["", "IS_FILE"]
         ):
             with async_patch(
                 "{}.FakeStreamReader.read".format(__name__),
@@ -165,6 +162,8 @@ class TestDevice(unittest.TestCase):
         with async_patch(
             "asyncio.open_connection",
             return_value=(FakeStreamReader(), FakeStreamWriter()),
+        ), async_patch(
+            "ppadb.device_async.DeviceAsync.shell", return_value=["", "IS_FILE"]
         ):
             with async_patch(
                 "{}.FakeStreamReader.read".format(__name__),
