@@ -46,4 +46,4 @@ normalize=false
 [project.urls]
 Repository = "https://github.com/spm5065/pure-python-adb.git"
 Issues = "https://github.com/spm5065/pure-python-adb/issues"
-Changelog = "https://github.com/spm5065/pure-python-adb/blob/master/HISTORY.md"
+Changelog = "https://github.com/spm5065/pure-python-adb/blob/master/HISTORY.rst"
