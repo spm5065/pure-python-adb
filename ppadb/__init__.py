@@ -1,6 +1,3 @@
-__version__ = "0.3.0-dev"
-
-
 class InstallError(Exception):
     def __init__(self, path, error):
         super(InstallError, self).__init__(

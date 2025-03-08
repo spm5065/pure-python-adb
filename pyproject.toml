@@ -1,0 +1,49 @@
+[build-system]
+requires = [
+    "setuptools>=64",
+    "setuptools-scm>=8"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+exclude = ["*.test", "*.test.*", "test.*", "test"]
+
+[project]
+name = "pure-python-adb-reborn"
+maintainers = [
+    {name = "Sergio Martins"},
+    {name = "Andrew Butcher"},
+]
+description = "Pure python implementation of the adb client."
+dynamic = [
+    "dependencies",
+    "version"
+]
+license = {text = "MIT"}
+readme = "README.rst"
+requires-python = ">= 3.12"
+
+keywords = [
+    "adb",
+    "android",
+    "async",
+]
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 3',
+    'Topic :: Software Development :: Testing',
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools_scm]
+fallback_version=">0.3.0"
+normalize=false
+
+[project.urls]
+Repository = "https://github.com/spm5065/pure-python-adb.git"
+Issues = "https://github.com/spm5065/pure-python-adb/issues"
+Changelog = "https://github.com/spm5065/pure-python-adb/blob/master/HISTORY.rst"

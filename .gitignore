@@ -11,4 +11,7 @@ venv
 .venv
 test_result.xml
 .python-version
+test_result_async.xml
+.venv/
 build/
+*.orig
