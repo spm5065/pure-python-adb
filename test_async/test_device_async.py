@@ -99,10 +99,11 @@ class TestDevice(unittest.TestCase):
             pass
 
         filedata = b"Ohayou sekai.\nGood morning world!"
-        with patch("os.path.exists", return_value=True), patch(
-            "os.path.isfile", return_value=True
-        ), patch("os.stat", return_value=os.stat_result((123,) * 10)), patch(
-            "ppadb.sync_async.aiofiles.open", async_mock_open(FILEDATA)
+        with (
+            patch("os.path.exists", return_value=True),
+            patch("os.path.isfile", return_value=True),
+            patch("os.stat", return_value=os.stat_result((123,) * 10)),
+            patch("ppadb.sync_async.aiofiles.open", async_mock_open(FILEDATA)),
         ):
             with async_patch(
                 "asyncio.open_connection",
@@ -123,24 +124,34 @@ class TestDevice(unittest.TestCase):
 
     @awaiter
     async def test_push_dir(self):
-        with patch("pathlib.Path.exists", return_value=True), patch(
-            "os.path.isfile", return_value=False
-        ), patch("os.path.isdir", return_value=True), patch(
-            "os.walk",
-            return_value=[("root1", "dirs1", "files1"), ("root2", "dirs2", "files2")],
+        with (
+            patch("pathlib.Path.exists", return_value=True),
+            patch("os.path.isfile", return_value=False),
+            patch("os.path.isdir", return_value=True),
+            patch(
+                "os.walk",
+                return_value=[
+                    ("root1", "dirs1", "files1"),
+                    ("root2", "dirs2", "files2"),
+                ],
+            ),
         ):
-            with async_patch("ppadb.device_async.DeviceAsync.shell"), async_patch(
-                "ppadb.device_async.DeviceAsync._push"
+            with (
+                async_patch("ppadb.device_async.DeviceAsync.shell"),
+                async_patch("ppadb.device_async.DeviceAsync._push"),
             ):
                 await self.device.push("src", "dest")
 
     @awaiter
     async def test_pull(self):
-        with async_patch(
-            "asyncio.open_connection",
-            return_value=(FakeStreamReader(), FakeStreamWriter()),
-        ), async_patch(
-            "ppadb.device_async.DeviceAsync.shell", return_value=["", "IS_FILE"]
+        with (
+            async_patch(
+                "asyncio.open_connection",
+                return_value=(FakeStreamReader(), FakeStreamWriter()),
+            ),
+            async_patch(
+                "ppadb.device_async.DeviceAsync.shell", return_value=["", "IS_FILE"]
+            ),
         ):
             with async_patch(
                 "{}.FakeStreamReader.read".format(__name__),
@@ -159,11 +170,14 @@ class TestDevice(unittest.TestCase):
 
     @awaiter
     async def test_pull_fail(self):
-        with async_patch(
-            "asyncio.open_connection",
-            return_value=(FakeStreamReader(), FakeStreamWriter()),
-        ), async_patch(
-            "ppadb.device_async.DeviceAsync.shell", return_value=["", "IS_FILE"]
+        with (
+            async_patch(
+                "asyncio.open_connection",
+                return_value=(FakeStreamReader(), FakeStreamWriter()),
+            ),
+            async_patch(
+                "ppadb.device_async.DeviceAsync.shell", return_value=["", "IS_FILE"]
+            ),
         ):
             with async_patch(
                 "{}.FakeStreamReader.read".format(__name__),

@@ -1,4 +1,3 @@
-
 class InstallError(Exception):
     def __init__(self, path, error):
         super(InstallError, self).__init__(
