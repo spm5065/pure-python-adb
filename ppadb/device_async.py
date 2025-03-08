@@ -146,15 +146,28 @@ class DeviceAsync(TransportAsync):
             await self.shell("rm -f {}".format(dest))
 
     async def uninstall(self, package):
-        result = await self.shell("pm uninstall {}".format(package))
+        attempts_remaining = 2
+        while attempts_remaining > 0:
+            attempts_remaining -= 1
 
-        m = re.search(self.UNINSTALL_RESULT_PATTERN, result)
+            result = await self.shell("pm uninstall {}".format(package))
+            m = re.search(self.UNINSTALL_RESULT_PATTERN, result)
 
-        if m and m.group(1) == "Success":
-            return True
-        elif m:
-            logger.error(m.group(1))
-            return False
-        else:
-            logger.error("There is no message after uninstalling")
-            return False
+            if m and m.group(1) == "Success":
+                return True
+            elif m:
+                if (
+                    "DELETE_FAILED_DEVICE_POLICY_MANAGER" in m.group(1)
+                    and attempts_remaining > 0
+                ):
+                    logger.warn(m.group(1))
+                    logger.info("App is device-admin, calling disable-user")
+                    await self.shell("pm disable-user {}".format(package))
+                else:
+                    logger.error(m.group(1))
+                    return False
+            else:
+                logger.error("There is no message after uninstalling")
+                return False
+
+        return False
