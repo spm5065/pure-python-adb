@@ -192,6 +192,7 @@ def test_filepaths():
         "toplevel/subdir1/test4.txt",
         "toplevel/subdir1/subdir2/test5.txt",
         "toplevel/subdir1/subdir2/test6.txt",
+        "toplevel/subdir1/subdir2/file name.txt"
     ]
     yield filepaths
 
@@ -202,7 +203,7 @@ def populated_device(device, test_filepaths):
 
     device.shell(f"mkdir -p /data/local/tmp/{dirpath}")
     for path in test_filepaths:
-        device.shell(f"echo {path} > /data/local/tmp/{path}")
+        device.shell(f"echo \"{path}\" > \"/data/local/tmp/{path}\"")
 
     yield device
 
@@ -214,7 +215,6 @@ def working_dir():
     with tempfile.TemporaryDirectory() as f:
         yield pathlib.Path(f)
 
-
 def test_pull_file(populated_device, working_dir):
     populated_device.pull(
         "/data/local/tmp/toplevel/test1.txt", working_dir / "test1.txt"
@@ -223,6 +223,13 @@ def test_pull_file(populated_device, working_dir):
     assert dest_path.is_file()
     assert dest_path.read_text() == "toplevel/test1.txt\n"
 
+def test_pull_file_with_space(populated_device, working_dir):
+    dest_path = working_dir / "file name.txt"
+    populated_device.pull(
+        "/data/local/tmp/toplevel/subdir1/subdir2/file name.txt", dest_path 
+    )
+    assert dest_path.is_file()
+    assert dest_path.read_text() == "toplevel/subdir1/subdir2/file name.txt"
 
 def test_pull_dir(populated_device, working_dir):
     populated_device.pull(
