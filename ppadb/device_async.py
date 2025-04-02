@@ -70,12 +70,12 @@ class DeviceAsync(TransportAsync):
         dest = Path(dest)
 
         dir_string = "IS_DIR"
-        res = await self.shell(f"[ -d \"{src}\" ] && echo {dir_string}")
+        res = await self.shell(f'[ -d "{src}" ] && echo {dir_string}')
         if dir_string in res:
             # Get all files in the dir
             # Pull each
             dest.mkdir(exist_ok=True)
-            cmd = f"ls -1a \"{src}\""
+            cmd = f'ls -1a "{src}"'
             res = await self.shell(cmd)
             contents_list = res.split("\n")
             contents_list = [
@@ -87,7 +87,7 @@ class DeviceAsync(TransportAsync):
                 await self.pull(element_src, element_dest)
         else:
             file_string = "IS_FILE"
-            res = await self.shell(f"[ -f \"{src}\" ] && echo {file_string}")
+            res = await self.shell(f'[ -f "{src}" ] && echo {file_string}')
             if file_string not in res:
                 raise FileNotFoundError(f"Cannot find {src} on device")
             await self._pull(str(src), str(dest))
