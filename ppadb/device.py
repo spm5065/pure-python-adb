@@ -102,7 +102,9 @@ class Device(Transport, Serial, Input, Utils, WM, Traffic, CPUStat, BatteryStats
                 self.pull(element_src, element_dest)
         else:
             file_string = "IS_FILE"
-            res = self.shell(f'[ -f "{src}" ] && echo {file_string}')
+            cmd = f'[ -f "{src}" ] && echo {file_string}'
+            print(cmd)
+            res = self.shell(cmd)
             if file_string not in res:
                 raise FileNotFoundError(f"Cannot find {src} on device")
             self._pull(str(src), str(dest))
